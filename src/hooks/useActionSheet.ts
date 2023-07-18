@@ -8,7 +8,8 @@ interface ActionSheetOption {
 export default function useActionSheet(
   message: string,
   options: ActionSheetOption[],
-  showCancel: boolean = true
+  showCancel: boolean = true,
+  onCancel?: () => void
 ) {
   const { showActionSheetWithOptions } = originalUseActionSheet()
 
@@ -23,7 +24,10 @@ export default function useActionSheet(
         title: message
       },
       (buttonIndex) => {
-        if (buttonIndex === cancelButtonIndex) return
+        if (buttonIndex === cancelButtonIndex) {
+          onCancel?.()
+          return
+        }
 
         options[buttonIndex].action()
       }

@@ -169,6 +169,26 @@ const fetchers = {
       method: 'POST',
       endpoint: '/community/block',
       payload
+    }),
+  getPrivateMessages: (payload: Lemmy.Requests.GetPrivateMessages.Request) =>
+    lemmyFetcherFunc<Lemmy.Requests.GetPrivateMessages.Response>({
+      method: 'GET',
+      endpoint: '/private_message/list',
+      payload
+    }),
+  sendPrivateMessage: (payload: Lemmy.Requests.SendPrivateMessage.Request) =>
+    lemmyFetcherFunc<Lemmy.Requests.SendPrivateMessage.Response>({
+      method: 'POST',
+      endpoint: '/private_message',
+      payload
+    }),
+  deletePrivateMessage: (
+    payload: Lemmy.Requests.DeletePrivateMessage.Request
+  ) =>
+    lemmyFetcherFunc<Lemmy.Requests.DeletePrivateMessage.Response>({
+      method: 'POST',
+      endpoint: '/private_message/delete',
+      payload
     })
 }
 

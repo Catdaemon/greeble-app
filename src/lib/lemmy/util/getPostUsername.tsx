@@ -24,7 +24,10 @@ function AvatarWrapper({
 }
 
 export default function getPostUsername(
-  post: Lemmy.Data.PostData | Lemmy.Data.CommentData
+  post:
+    | Lemmy.Data.PostData
+    | Lemmy.Data.CommentData
+    | Lemmy.Data.PrivateMessageData
 ) {
   const { showLocalUserServer, showUserAvatars, showFederatedUserServer } =
     useAppSettingsStore.getState()

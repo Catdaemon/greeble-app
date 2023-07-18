@@ -8,7 +8,8 @@ const routeIcons = {
   feed: 'Home',
   search: 'Search',
   settings: 'Cog',
-  account: 'UserCircle'
+  account: 'UserCircle',
+  messages: 'Mail'
 }
 
 export default function Layout() {
@@ -64,7 +65,7 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name="messages/index"
+        name="messages"
         options={{
           title: 'Messages'
         }}

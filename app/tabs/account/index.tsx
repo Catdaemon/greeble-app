@@ -1,34 +1,34 @@
 import { Stack, useRouter } from 'expo-router'
 import { useMemo } from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { ScrollView, useTheme } from 'tamagui'
+import { ScrollView } from 'tamagui'
 import AccountRow from '../../../src/components/AccountRow'
+import Avatar from '../../../src/components/Avatar'
 import Card from '../../../src/components/Card'
 import { BodyText, HeadingText } from '../../../src/components/Core/Text'
 import { View } from '../../../src/components/Core/View'
 import Icon from '../../../src/components/Icon'
-import { Account, useAccountStore } from '../../../src/stores/accountStore'
+import useActiveAccount from '../../../src/hooks/useActiveAccount'
 import { useLemmyQuery } from '../../../src/lib/lemmy/rqHooks'
-import Avatar from '../../../src/components/Avatar'
+import { Account, useAccountStore } from '../../../src/stores/accountStore'
+import queryKeys from '../../../src/lib/lemmy/rqKeys'
 
 export default function AccountScreen() {
-  const theme = useTheme()
   const router = useRouter()
-  const [accounts, activeAccount] = useAccountStore((state) => [
-    state.accounts,
-    state.activeAccount
-  ])
+  const [accounts] = useAccountStore((state) => [state.accounts])
 
-  const activeAccountDetails = useMemo(() => {
-    return accounts.find((x) => x.accountID === activeAccount)
-  }, [accounts, activeAccount])
+  const activeAccount = useActiveAccount()
 
-  const { data: myAccountData } = useLemmyQuery('getSite', [activeAccount], {})
+  const { data: myAccountData } = useLemmyQuery(
+    'getSite',
+    [queryKeys.SITE, activeAccount.accountID],
+    {}
+  )
 
   const accountsByServer = useMemo(() => {
     const accountsGroupedByServerUrl: Record<string, Account[]> = {}
     accounts
-      .filter((x) => x.accountID !== activeAccount)
+      .filter((x) => x.accountID !== activeAccount.accountID)
       .forEach((account) => {
         if (!accountsGroupedByServerUrl[account.serverURL]) {
           accountsGroupedByServerUrl[account.serverURL] = []
@@ -51,21 +51,21 @@ export default function AccountScreen() {
         }}
       />
       <ScrollView flex={1}>
-        {activeAccountDetails && (
+        {activeAccount && (
           <Card center padding="$2" marginBottom="$1" gap="$1">
             <HeadingText>Active account</HeadingText>
-            {!activeAccountDetails.token ? (
+            {!activeAccount.token ? (
               <Icon name="VenetianMask" size="$4" color="$fadedText" />
             ) : (
               <Avatar
                 size={128}
-                src={myAccountData?.my_user.local_user_view.person.avatar}
+                src={myAccountData?.my_user?.local_user_view.person.avatar}
                 placeholderIcon="User"
               />
             )}
             <View center>
-              <HeadingText>{activeAccountDetails.username}</HeadingText>
-              <BodyText>{activeAccountDetails.serverURL}</BodyText>
+              <HeadingText>{activeAccount.username}</HeadingText>
+              <BodyText>{activeAccount.serverURL}</BodyText>
             </View>
           </Card>
         )}

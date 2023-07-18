@@ -6,7 +6,9 @@ const queryKeys = {
   SEARCH: 'user',
   POSTCOMMENTS: 'postComments',
   COMMUNITY: 'community',
-  COMMUNITIES: 'communities'
+  COMMUNITIES: 'communities',
+  MESSAGES: 'messages',
+  SITE: 'site'
 }
 
 export default queryKeys

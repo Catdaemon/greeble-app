@@ -1,18 +1,16 @@
 import { formatRelative } from 'date-fns'
-import Card from '../Card'
-import { BodyText, HeadingText } from '../Core/Text'
-import { View } from '../Core/View'
-import Icon from '../Icon'
-import Image from '../Core/Image'
-import Avatar from '../Avatar'
-import { Pressable } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { router } from 'expo-router'
 import useActionSheet from '../../hooks/useActionSheet'
 import { useLemmyMutation } from '../../lib/lemmy/rqHooks'
 import queryKeys from '../../lib/lemmy/rqKeys'
-import { router } from 'expo-router'
+import { useComposeMessageStore } from '../../stores/composeMessageStore'
+import Avatar from '../Avatar'
+import Card from '../Card'
 import FullScreenLoader from '../Core/Loader/FullScreenLoader'
 import MoreButton from '../Core/MoreButton'
+import { BodyText, HeadingText } from '../Core/Text'
+import { View } from '../Core/View'
+import Icon from '../Icon'
 
 export interface UserProps {
   personData: Lemmy.Data.PersonData
@@ -26,14 +24,23 @@ export default function UserCard({ personData }: UserProps) {
 
   const showActionSheet = useActionSheet('User actions', [
     {
+      title: 'Message user',
+      action: () => {
+        useComposeMessageStore.setState({
+          message: '',
+          toUser: personData.person,
+          replyingTo: null
+        })
+        router.push('/message/compose')
+      }
+    },
+    {
       title: 'Block user',
       action: async () => {
-        console.log('block user')
         await blockUser({
           person_id: personData.person.id,
           block: true
         })
-        console.log('block user done')
         router.back()
       }
     }

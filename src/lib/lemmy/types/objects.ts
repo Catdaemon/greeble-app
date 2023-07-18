@@ -114,4 +114,16 @@ namespace Lemmy.Objects {
     // person_blocks: Array<PersonBlockView>
     discussion_languages: string[]
   }
+  export interface PrivateMessage {
+    ap_id: string
+    content: string
+    creator_id: string
+    deleted: boolean
+    id: string
+    local: boolean
+    published: string
+    read: boolean
+    recipient_id: string
+    updated?: string
+  }
 }

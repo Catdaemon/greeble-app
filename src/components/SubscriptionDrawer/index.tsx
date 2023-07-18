@@ -1,4 +1,4 @@
-import { FlashList } from '@shopify/flash-list'
+import { router } from 'expo-router'
 import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { Pressable, useWindowDimensions } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
@@ -10,17 +10,16 @@ import Animated, {
   useSharedValue,
   withTiming
 } from 'react-native-reanimated'
-import { useLemmyInfiniteQuery, useLemmyQuery } from '../../lib/lemmy/rqHooks'
+import useLocalServerDomain from '../../hooks/useLocalServerDomain'
+import { useLemmyInfiniteQuery } from '../../lib/lemmy/rqHooks'
 import queryKeys from '../../lib/lemmy/rqKeys'
+import { useTemporaryStore } from '../../stores/temporaryStore'
 import Avatar from '../Avatar'
 import CardRow from '../CardRow'
 import FullScreenLoader from '../Core/Loader/FullScreenLoader'
 import { BodyText } from '../Core/Text'
 import { View } from '../Core/View'
 import Icon from '../Icon'
-import { router } from 'expo-router'
-import { useTemporaryStore } from '../../stores/temporaryStore'
-import useLocalServerDomain from '../../hooks/useLocalServerDomain'
 import InfiniteList from '../InfiniteList'
 
 export default function SubscriptionDrawer({

@@ -203,3 +203,28 @@ namespace Lemmy.Requests.GetCommunities {
     communities: Lemmy.Data.CommunityData[]
   }
 }
+namespace Lemmy.Requests.GetPrivateMessages {
+  export interface Request extends Auth {
+    limit?: number
+    page?: number
+  }
+  export interface Response {
+    private_messages: Lemmy.Data.PrivateMessageData[]
+  }
+}
+namespace Lemmy.Requests.SendPrivateMessage {
+  export interface Request extends Auth {
+    recipient_id: string
+    content: string
+  }
+  export interface Response {
+    private_message: Lemmy.Objects.PrivateMessage
+  }
+}
+namespace Lemmy.Requests.DeletePrivateMessage {
+  export interface Request extends Auth {
+    private_message_id: string
+    deleted: boolean
+  }
+  export interface Response {}
+}

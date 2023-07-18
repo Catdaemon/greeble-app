@@ -102,6 +102,14 @@ export default function RootLayout() {
                       }}
                     />
                     <Stack.Screen
+                      name="message/compose"
+                      options={{
+                        presentation: 'modal',
+                        title: 'Compose message',
+                        headerShown: true
+                      }}
+                    />
+                    <Stack.Screen
                       name="comments/[postId]"
                       options={{
                         title: 'Post Comments'

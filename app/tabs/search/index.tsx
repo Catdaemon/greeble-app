@@ -22,7 +22,7 @@ export default function Search() {
   const [activeTab, setActiveTab] =
     useState<Lemmy.Enums.SearchType>('Communities')
 
-  const debouncedSetSearchTeam = useMemo(
+  const debouncedSetSearchTerm = useMemo(
     () => AwesomeDebouncePromise(setSearchTerm, 500),
     [setSearchTerm]
   )
@@ -77,7 +77,7 @@ export default function Search() {
             value={searchTermInput}
             onChangeText={(newVal) => {
               setSearchTermInput(newVal)
-              debouncedSetSearchTeam(newVal)
+              debouncedSetSearchTerm(newVal)
             }}
           />
         </View>

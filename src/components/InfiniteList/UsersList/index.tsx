@@ -5,7 +5,12 @@ import UserCard from '../../UserCard'
 
 function renderItem(data: Lemmy.Data.PersonData, index: number) {
   return (
-    <Pressable onPress={() => router.push(`/user/${data.person.id}`)}>
+    <Pressable
+      onPress={() => router.push(`/user/${data.person.id}`)}
+      style={{
+        marginBottom: 8
+      }}
+    >
       <UserCard personData={data} />
     </Pressable>
   )

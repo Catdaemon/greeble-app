@@ -63,4 +63,9 @@ namespace Lemmy.Data {
     registration_mode: Lemmy.Enums.RegistrationMode
     reports_email_admins: boolean
   }
+  export interface PrivateMessageData {
+    private_message: Lemmy.Objects.PrivateMessage
+    creator: Lemmy.Objects.Person
+    recipient: Lemmy.Objects.Person
+  }
 }

@@ -14,8 +14,8 @@ import Animated, {
   withTiming
 } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import Icon from '../Icon'
 import useActionSheet from '../../hooks/useActionSheet'
+import Icon from '../Icon'
 
 const closeDistance = 100
 const fadeDistance = 200
@@ -45,20 +45,25 @@ export default function MediaLightbox({
   const zoomAmountStart = useSharedValue(1)
   const zoomAmount = useSharedValue(1)
 
-  const showActionSheet = useActionSheet(null, [
-    {
-      title: 'Copy',
-      action: () => {}
-    },
-    {
-      title: 'Save',
-      action: () => {}
-    },
-    {
-      title: 'Share',
-      action: () => {}
-    }
-  ])
+  const showActionSheet = useActionSheet(
+    null,
+    [
+      {
+        title: 'Copy',
+        action: () => {}
+      },
+      {
+        title: 'Save',
+        action: () => {}
+      },
+      {
+        title: 'Share',
+        action: () => {}
+      }
+    ],
+    true,
+    () => setShowActions(false)
+  )
 
   const panGesture = Gesture.Pan()
     .onStart((e) => {
