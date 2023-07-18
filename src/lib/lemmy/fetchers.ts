@@ -36,6 +36,8 @@ export async function lemmyFetcherFunc<T>({
     payloadWithAuth[key] === undefined ? delete payloadWithAuth[key] : {}
   )
 
+  console.log(payloadWithAuth)
+
   let input: RequestInfo = `${serverBaseUrl}/api/v3${endpoint}`
   const config: RequestInit = {
     method
@@ -188,6 +190,12 @@ const fetchers = {
     lemmyFetcherFunc<Lemmy.Requests.DeletePrivateMessage.Response>({
       method: 'POST',
       endpoint: '/private_message/delete',
+      payload
+    }),
+  markPostRead: (payload: Lemmy.Requests.MarkPostRead.Request) =>
+    lemmyFetcherFunc<Lemmy.Requests.MarkPostRead.Response>({
+      method: 'POST',
+      endpoint: '/post/mark_as_read',
       payload
     })
 }

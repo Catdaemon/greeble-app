@@ -18,6 +18,7 @@ export interface PostProps {
   linkUrl?: string
   videoUrl?: string
   date?: string
+  read?: boolean
   community: ReactNode
   communityId?: string
   author: ReactNode
@@ -50,6 +51,7 @@ export default function Post({
   renderBody,
   date,
   cardView,
+  read,
   onPress
 }: PostProps) {
   const [
@@ -98,6 +100,7 @@ export default function Post({
       padding="$0.5"
       backgroundColor="$contentBackground"
       marginBottom="$0.25"
+      opacity={!renderBody && read ? 0.5 : 1}
     >
       {titleAtTop && showAsCard && (
         <TitleText marginBottom="$1">{title}</TitleText>

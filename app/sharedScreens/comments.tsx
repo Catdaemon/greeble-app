@@ -11,12 +11,14 @@ import Post from '../../src/components/Post'
 import {
   resetInfiniteQueryCache,
   useLemmyInfiniteQuery,
+  useLemmyMutation,
   useLemmyQuery
 } from '../../src/lib/lemmy/rqHooks'
 import getPostCommunityName from '../../src/lib/lemmy/util/getPostCommunityName'
 import getPostUsername from '../../src/lib/lemmy/util/getPostUsername'
 import { useAccountStore } from '../../src/stores/accountStore'
 import queryKeys from '../../src/lib/lemmy/rqKeys'
+import { useAppSettingsStore } from '../../src/stores/appSettingsStore'
 
 function listFooter(
   isLoading: boolean,
@@ -38,6 +40,9 @@ export default function CommentsScreen() {
   const params = useLocalSearchParams<any>()
   const postId = Array.isArray(params.postId) ? params.postId[0] : params.postId
   const activeAccount = useAccountStore((state) => state.activeAccount)
+  const shouldMarkAsRead = useAppSettingsStore(
+    (state) => state.markPostsReadOnOpen
+  )
   const [isFirstMount, setIsFirstMount] = useState(true)
 
   const idIsNumber = !isNaN(postId)
@@ -49,6 +54,22 @@ export default function CommentsScreen() {
       id: idIsNumber ? postId : undefined
     }
   )
+
+  const { mutateAsync: markAsRead, isLoading: isMarkingRead } =
+    useLemmyMutation('markPostRead', [queryKeys.POST, postId])
+
+  useEffect(() => {
+    if (
+      !postData?.post_view?.read &&
+      postData?.post_view?.post?.id &&
+      shouldMarkAsRead
+    ) {
+      markAsRead({
+        post_id: postData?.post_view?.post?.id,
+        read: true
+      })
+    }
+  }, [postData, postData?.post_view?.read])
 
   const [sortType, setSortType] = useState<Lemmy.Enums.CommentSortType>('Hot')
 
@@ -137,6 +158,7 @@ export default function CommentsScreen() {
                   isNsfw={postData.post_view.post.nsfw}
                   title={postData.post_view.post.name}
                   id={postData.post_view.post.id.toString()}
+                  read={postData.post_view.read}
                   counts={{
                     downvotes: postData.post_view.counts.downvotes,
                     replies: postData.post_view.counts.comments,

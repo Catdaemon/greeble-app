@@ -228,3 +228,10 @@ namespace Lemmy.Requests.DeletePrivateMessage {
   }
   export interface Response {}
 }
+namespace Lemmy.Requests.MarkPostRead {
+  export interface Request extends Auth {
+    post_id: string
+    read: boolean
+  }
+  export interface Response extends PostResponse {}
+}

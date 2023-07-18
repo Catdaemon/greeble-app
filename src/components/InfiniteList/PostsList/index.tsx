@@ -13,6 +13,7 @@ function renderPost(data: Lemmy.Data.PostData, index: number) {
       authorId={data.post.creator_id}
       community={getPostCommunityName(data)}
       communityId={data.post.community_id}
+      read={data.read}
       counts={{
         upvotes: data.counts.upvotes,
         downvotes: data.counts.downvotes,

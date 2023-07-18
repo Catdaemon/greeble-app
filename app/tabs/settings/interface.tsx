@@ -35,6 +35,12 @@ export default function InterfaceSettings() {
           icon="Compass"
         />
 
+        <AppSetting
+          label="Mark posts read on open"
+          setting="markPostsReadOnOpen"
+          icon="CheckCircle"
+        />
+
         <HeadingText marginVertical="$1">Comment swipe actions</HeadingText>
 
         <AppSetting

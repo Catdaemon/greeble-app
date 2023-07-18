@@ -22,6 +22,7 @@ export interface AppSettingsStoreState {
   showUserAvatars: boolean
   postTitleAtTop: boolean
   postThumbnailRight: boolean
+  markPostsReadOnOpen: boolean
 
   leftCommentActions: boolean
   leftCommentUpvote: boolean
@@ -66,6 +67,7 @@ const defaultState: AppSettingsStoreState = {
   showUserAvatars: true,
   postTitleAtTop: false,
   postThumbnailRight: false,
+  markPostsReadOnOpen: true,
 
   leftCommentActions: false,
   leftCommentUpvote: false,
