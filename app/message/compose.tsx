@@ -1,23 +1,20 @@
-import { ScrollView, TextArea } from 'tamagui'
-import { BodyText, HeadingText } from '../../src/components/Core/Text'
+import { Stack, router } from 'expo-router'
+import { KeyboardAvoidingView, Pressable } from 'react-native'
+import { ScrollView } from 'tamagui'
+import FullScreenLoader from '../../src/components/Core/Loader/FullScreenLoader'
+import { HeadingText } from '../../src/components/Core/Text'
 import { View } from '../../src/components/Core/View'
+import Icon from '../../src/components/Icon'
+import MarkdownInput from '../../src/components/MarkdownInput'
+import MarkdownView from '../../src/components/MarkdownView'
 import Message from '../../src/components/Message'
+import useActiveAccount from '../../src/hooks/useActiveAccount'
+import { useLemmyMutation } from '../../src/lib/lemmy/rqHooks'
+import queryKeys from '../../src/lib/lemmy/rqKeys'
 import getPostUsername from '../../src/lib/lemmy/util/getPostUsername'
 import { useComposeMessageStore } from '../../src/stores/compose/composeMessageStore'
-import MarkdownView from '../../src/components/MarkdownView'
-import TextInput from '../../src/components/TextInput'
-import { KeyboardAvoidingView, Pressable } from 'react-native'
-import MarkdownInput from '../../src/components/MarkdownInput'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { Stack, router } from 'expo-router'
-import Icon from '../../src/components/Icon'
-import { useLemmyMutation } from '../../src/lib/lemmy/rqHooks'
-import useActiveAccount from '../../src/hooks/useActiveAccount'
-import FullScreenLoader from '../../src/components/Core/Loader/FullScreenLoader'
-import queryKeys from '../../src/lib/lemmy/rqKeys'
 
 export default function ComposeMessageScreen() {
-  const { bottom } = useSafeAreaInsets()
   const activeAccount = useActiveAccount()
   const [message, replyingTo, toUser, setMessage] = useComposeMessageStore(
     (state) => [state.message, state.replyingTo, state.toUser, state.setMessage]
@@ -43,10 +40,9 @@ export default function ComposeMessageScreen() {
   return (
     <KeyboardAvoidingView
       style={{
-        flex: 1,
-        marginBottom: bottom
+        flex: 1
       }}
-      behavior="height"
+      // behavior="height"
       keyboardVerticalOffset={120}
     >
       <Stack.Screen
@@ -58,7 +54,7 @@ export default function ComposeMessageScreen() {
           )
         }}
       />
-      <View flex padding="$0.5">
+      <View flex paddingHorizontal="$0.5" paddingTop="$0.5">
         {replyingTo && (
           <>
             <HeadingText marginBottom="$0.5">Replying to</HeadingText>

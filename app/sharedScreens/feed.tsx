@@ -39,7 +39,7 @@ function postListFooter(
 }
 
 export function FeedScreen() {
-  const [sortType, setSortType] = useState<Lemmy.Enums.SortType>('Hot')
+  const [sortType, setSortType] = useState<Lemmy.Enums.SortType>('Active')
   const [viewType] = useTemporaryStore((state) => [state.viewType])
   const activeAccount = useAccountStore((state) => state.activeAccount)
   const previousActiveAccount = useRef(activeAccount)
