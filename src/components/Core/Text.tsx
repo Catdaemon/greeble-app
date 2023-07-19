@@ -34,7 +34,7 @@ export function BodyText({
           ? 'underline'
           : undefined
       }
-      fontSize={tiny ? 12 : 16}
+      fontSize={tiny ? 12 : 15}
       fontWeight={bold ? '500' : '400'}
       {...props}
     />
@@ -59,7 +59,7 @@ export function TitleText(props: BaseTextProps) {
       {...props}
       color="$textColor"
       // fontFamily="$heading"
-      fontWeight={'500'}
+      fontWeight={'400'}
       fontSize={16}
     />
   )
