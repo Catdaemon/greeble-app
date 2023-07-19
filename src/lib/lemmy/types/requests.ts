@@ -235,3 +235,18 @@ namespace Lemmy.Requests.MarkPostRead {
   }
   export interface Response extends PostResponse {}
 }
+namespace Lemmy.Requests.AddComment {
+  export interface Request extends Auth {
+    parent_id?: string
+    post_id: string
+    content: string
+  }
+  export interface Response extends CommentResponse {}
+}
+namespace Lemmy.Requests.EditComment {
+  export interface Request extends Auth {
+    comment_id: string
+    content: string
+  }
+  export interface Response extends CommentResponse {}
+}

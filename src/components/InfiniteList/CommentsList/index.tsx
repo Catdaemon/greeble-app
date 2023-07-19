@@ -7,6 +7,8 @@ import Comment, { CommentProps } from '../../Comment'
 import { View } from '../../Core/View'
 import InfiniteList, { InfiniteListImplementation } from '..'
 import queryKeys from '../../../lib/lemmy/rqKeys'
+import { useComposeCommentStore } from '../../../stores/compose/composeCommentStore'
+import { router } from 'expo-router'
 
 const renderListItem = (item, index) => {
   return <Comment {...item} />
@@ -99,6 +101,13 @@ export default function CommentsList({
           ({
             author: getPostUsername(x),
             onActionPerformed: onCommentActionPerformed,
+            onReplyPressed: () => {
+              useComposeCommentStore.setState({
+                message: '',
+                replyingToComment: x
+              })
+              router.push('/comment/compose')
+            },
             body: x.comment.content,
             path: x.comment.path,
             id: x.comment.id,

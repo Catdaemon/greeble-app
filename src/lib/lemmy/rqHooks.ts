@@ -18,7 +18,7 @@ import queryKeys from './rqKeys'
 
 function getQueryKey(additionalKeys: any[] = []) {
   const accountId = useAccountStore.getState().activeAccount
-  return [accountId, ...additionalKeys]
+  return [accountId, ...additionalKeys.map((x) => String(x))]
 }
 
 export function useLemmyQuery<FnName extends LemmyFetcherName>(

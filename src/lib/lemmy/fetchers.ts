@@ -36,8 +36,6 @@ export async function lemmyFetcherFunc<T>({
     payloadWithAuth[key] === undefined ? delete payloadWithAuth[key] : {}
   )
 
-  console.log(payloadWithAuth)
-
   let input: RequestInfo = `${serverBaseUrl}/api/v3${endpoint}`
   const config: RequestInit = {
     method
@@ -196,6 +194,18 @@ const fetchers = {
     lemmyFetcherFunc<Lemmy.Requests.MarkPostRead.Response>({
       method: 'POST',
       endpoint: '/post/mark_as_read',
+      payload
+    }),
+  addComment: (payload: Lemmy.Requests.AddComment.Request) =>
+    lemmyFetcherFunc<Lemmy.Requests.AddComment.Response>({
+      method: 'POST',
+      endpoint: '/comment',
+      payload
+    }),
+  editComment: (payload: Lemmy.Requests.EditComment.Request) =>
+    lemmyFetcherFunc<Lemmy.Requests.EditComment.Response>({
+      method: 'PUT',
+      endpoint: '/comment',
       payload
     })
 }

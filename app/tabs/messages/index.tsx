@@ -11,7 +11,7 @@ import { useMemo, useState } from 'react'
 import SegmentedButtonRow from '../../../src/components/SegmentedButtonRow'
 import Message from '../../../src/components/Message'
 import getPostUsername from '../../../src/lib/lemmy/util/getPostUsername'
-import { useComposeMessageStore } from '../../../src/stores/composeMessageStore'
+import { useComposeMessageStore } from '../../../src/stores/compose/composeMessageStore'
 import queryKeys from '../../../src/lib/lemmy/rqKeys'
 
 type ValidTabId = 'sent' | 'received'

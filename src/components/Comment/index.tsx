@@ -1,4 +1,4 @@
-import { formatDistanceStrict, set } from 'date-fns'
+import { formatDistanceStrict } from 'date-fns'
 import { ReactNode, useEffect, useState } from 'react'
 import { Pressable } from 'react-native'
 import Animated, {
@@ -8,16 +8,16 @@ import Animated, {
   useSharedValue,
   withTiming
 } from 'react-native-reanimated'
+import useActionSheet from '../../hooks/useActionSheet'
 import { useLemmyCommentMutation } from '../../lib/lemmy/rqHooks'
 import { useAppSettingsStore } from '../../stores/appSettingsStore'
+import Loader from '../Core/Loader'
 import { BodyText } from '../Core/Text'
 import { View } from '../Core/View'
+import Icon from '../Icon'
 import MarkdownView from '../MarkdownView'
 import SwipeyActions, { SwipeyAction } from '../SwipeyActions'
 import TextWithIcon from '../TextWithIcon'
-import Loader from '../Core/Loader'
-import Icon from '../Icon'
-import useActionSheet from '../../hooks/useActionSheet'
 
 // colors to use for comment depth
 const commentColorSequence = [
@@ -44,6 +44,7 @@ function getCommentColor(depth: number) {
 export interface CommentProps {
   id: string
   onActionPerformed: () => void
+  onReplyPressed?: () => void
   path: string
   author: ReactNode
   body: string
@@ -155,6 +156,7 @@ function getCommentRightActions(
 export default function Comment({
   id,
   onActionPerformed,
+  onReplyPressed,
   author,
   body,
   replyCount,
@@ -183,9 +185,7 @@ export default function Comment({
     {
       title: 'Reply',
       action: () => {
-        setActionLoading(true)
-
-        setActionLoading(false)
+        onReplyPressed?.()
       }
     },
     {
@@ -362,8 +362,8 @@ export default function Comment({
             </Animated.View>
             <Animated.View style={hiderStyle}>
               <SwipeyActions
-                leftOptions={getCommentLeftActions(mutations, () => {})}
-                rightOptions={getCommentRightActions(mutations, () => {})}
+                leftOptions={getCommentLeftActions(mutations, onReplyPressed)}
+                rightOptions={getCommentRightActions(mutations, onReplyPressed)}
                 longPressAction={showActionSheet}
                 style={{
                   marginTop: 4

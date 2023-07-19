@@ -3,7 +3,7 @@ import { BodyText, HeadingText } from '../../src/components/Core/Text'
 import { View } from '../../src/components/Core/View'
 import Message from '../../src/components/Message'
 import getPostUsername from '../../src/lib/lemmy/util/getPostUsername'
-import { useComposeMessageStore } from '../../src/stores/composeMessageStore'
+import { useComposeMessageStore } from '../../src/stores/compose/composeMessageStore'
 import MarkdownView from '../../src/components/MarkdownView'
 import TextInput from '../../src/components/TextInput'
 import { KeyboardAvoidingView, Pressable } from 'react-native'
@@ -14,6 +14,7 @@ import Icon from '../../src/components/Icon'
 import { useLemmyMutation } from '../../src/lib/lemmy/rqHooks'
 import useActiveAccount from '../../src/hooks/useActiveAccount'
 import FullScreenLoader from '../../src/components/Core/Loader/FullScreenLoader'
+import queryKeys from '../../src/lib/lemmy/rqKeys'
 
 export default function ComposeMessageScreen() {
   const { bottom } = useSafeAreaInsets()
@@ -24,7 +25,7 @@ export default function ComposeMessageScreen() {
 
   const { mutateAsync: sendMessage, isLoading } = useLemmyMutation(
     'sendPrivateMessage',
-    [activeAccount.accountID]
+    [queryKeys.MESSAGES, activeAccount.accountID]
   )
 
   const onSendPressed = async () => {

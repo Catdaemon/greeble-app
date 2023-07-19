@@ -17,12 +17,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 SplashScreen.preventAutoHideAsync()
 
-if (Platform.OS === 'android') {
-  if (UIManager.setLayoutAnimationEnabledExperimental) {
-    UIManager.setLayoutAnimationEnabledExperimental(true)
-  }
-}
-
 function NavThemeProvider({ children }) {
   const navTheme = useNavigationTheme()
 
@@ -49,7 +43,6 @@ export default function RootLayout() {
     }
 
     setIsReady(true)
-    SplashScreen.hideAsync()
   }, [fontsLoaded])
 
   const [accounts] = useAccountStore((state) => [state.accounts], shallow)
@@ -64,6 +57,8 @@ export default function RootLayout() {
     } else {
       router.replace('/welcome/')
     }
+
+    SplashScreen.hideAsync()
   }, [accounts, router, isReady])
 
   if (!isReady) {
@@ -88,6 +83,12 @@ export default function RootLayout() {
                   <Stack>
                     <Stack.Screen name="welcome" />
                     <Stack.Screen
+                      name="index"
+                      options={{
+                        headerShown: false
+                      }}
+                    />
+                    <Stack.Screen
                       name="tabs"
                       options={{
                         headerShown: false
@@ -106,6 +107,14 @@ export default function RootLayout() {
                       options={{
                         presentation: 'modal',
                         title: 'Compose message',
+                        headerShown: true
+                      }}
+                    />
+                    <Stack.Screen
+                      name="comment/compose"
+                      options={{
+                        presentation: 'modal',
+                        title: 'Compose comment',
                         headerShown: true
                       }}
                     />
