@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { DimensionValue, Pressable, View } from 'react-native'
 import { useTheme } from 'tamagui'
 import getLinkInfo from '../../lib/getLinkInfo'
@@ -43,6 +43,7 @@ function Thumbnail({
         linkInfo={linkInfo}
         thumbSize={thumbSize}
         square={square}
+        blur={blur}
         thumbnailUrl={imageUrl ?? linkInfo.thumbnailUrl}
       />
     )
@@ -56,7 +57,9 @@ function Thumbnail({
         <Image
           enableLightbox
           blurRadius={blur ? 100 : 0}
-          src={imageUrl ?? linkUrl}
+          source={{
+            uri: imageUrl ?? linkUrl
+          }}
           contentFit={contain ? 'contain' : 'cover'}
           style={{
             aspectRatio: square ? 1 : 16 / 9,
@@ -80,7 +83,9 @@ function Thumbnail({
           <IconOverlay icon={linkInfo.icon} iconColor={linkInfo.color}>
             <Image
               contentFit={contain ? 'contain' : 'cover'}
-              src={imageUrl}
+              source={{
+                uri: imageUrl
+              }}
               style={{
                 aspectRatio: square ? 1 : 16 / 9,
                 width: thumbSize
@@ -109,7 +114,15 @@ function Thumbnail({
 
 export default function PostThumbnail(props: PostThumbnailProps) {
   const linkInfoUrl = props.linkUrl ?? props.imageUrl
-  const linkInfo = useMemo(() => getLinkInfo(linkInfoUrl), [linkInfoUrl])
+  const [linkInfo, setLinkInfo] = useState<LinkInfo>(null)
+
+  useEffect(() => {
+    if (!linkInfoUrl) return
+    getLinkInfo(linkInfoUrl).then(setLinkInfo)
+  }, [linkInfoUrl])
+
+  if (!linkInfo) return null
+
   return (
     <View>
       <Thumbnail {...props} linkInfo={linkInfo} />

@@ -54,6 +54,32 @@ export function getYouTubeVideoId(url?: string) {
   return matchResult && matchResult[7]
 }
 
+async function getRedGifsVideoInfo(url?: string) {
+  const end = url?.split('/').pop()
+
+  try {
+    const apiKey = await getLinkBearerToken(LinkSource.RedGifs)
+    const apiUrl = `https://api.redgifs.com/v2/gifs/${end}`
+    const resp = await fetch(apiUrl, {
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'User-Agent': 'greeble/1'
+      },
+      credentials: 'include'
+    })
+    const json = await resp.json()
+    return {
+      url: json.gif.urls.hd,
+      thumbnail: json.gif.urls.thumbnail
+    }
+  } catch (e) {
+    return {
+      url: '',
+      thumbnail: ''
+    }
+  }
+}
+
 function urlIsLocalServer(url: string) {
   const activeAccount = useAccountStore.getState().getActiveAccount()
   if (activeAccount) {
@@ -71,7 +97,39 @@ function getUrlDomain(url: string) {
   }
 }
 
-export default function getLinkInfo(url?: string): LinkInfo {
+const redGifsApiKey = ''
+
+export async function getLinkBearerToken(source: LinkSource) {
+  if (source === LinkSource.RedGifs) {
+    if (redGifsApiKey) return redGifsApiKey
+
+    try {
+      const result = await fetch('https://api.redgifs.com/v2/auth/temporary', {
+        headers: {
+          'User-Agent': 'greeble/1'
+        }
+      })
+      const json = await result.json()
+      return json.token as string
+    } catch (e) {
+      return undefined
+    }
+  }
+
+  return undefined
+}
+
+async function getLinkUrls(source: LinkSource, url?: string) {
+  if (source === LinkSource.RedGifs) {
+    return await getRedGifsVideoInfo(url)
+  }
+  return {
+    url: url,
+    thumbnail: getThumbnailUrl(source, url)
+  }
+}
+
+export default async function getLinkInfo(url?: string): Promise<LinkInfo> {
   if (!url) {
     return {
       type: LinkType.Link,
@@ -105,15 +163,18 @@ export default function getLinkInfo(url?: string): LinkInfo {
     ? 'Video'
     : LinkSourceIcons[source]
 
+  const linkUrls = await getLinkUrls(source, url)
+
   return {
     type: type,
     source,
     name: LinkSourceNames[source],
-    url,
+    url: linkUrls.url,
     icon,
-    thumbnailUrl: getThumbnailUrl(source, url),
+    thumbnailUrl: linkUrls.thumbnail,
     isLocal: isLocalServer,
     domain: getUrlDomain(url),
-    color: LinkSourceColors[source]
+    color: LinkSourceColors[source],
+    bearerToken: await getLinkBearerToken(source)
   }
 }

@@ -25,7 +25,9 @@ export default function CommunityCard({ communityData }: CommunityCardProps) {
           style={{ height: 150 }}
           contentFit="cover"
           contentPosition="top center"
-          src={communityData.community.banner ?? communityData.community.icon}
+          source={{
+            uri: communityData.community.banner ?? communityData.community.icon
+          }}
         />
       )}
       <View marginTop="$1">

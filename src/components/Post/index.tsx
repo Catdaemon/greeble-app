@@ -1,10 +1,10 @@
 import { formatDistanceStrict } from 'date-fns'
 import { router } from 'expo-router'
-import { ReactNode, useMemo } from 'react'
+import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { Pressable } from 'react-native'
 import { useAppSettingsStore } from '../../../src/stores/appSettingsStore'
 import getLinkInfo from '../../lib/getLinkInfo'
-import { LinkType } from '../../lib/lemmy/linkInfoTypes'
+import { LinkInfo, LinkType } from '../../lib/lemmy/linkInfoTypes'
 import { BodyText, TitleText } from '../Core/Text'
 import { View } from '../Core/View'
 import MarkdownView from '../MarkdownView'
@@ -72,7 +72,13 @@ export default function Post({
     store.postThumbnailRight
   ])
 
-  const linkInfo = useMemo(() => linkUrl && getLinkInfo(linkUrl), [linkUrl])
+  const [linkInfo, setLinkInfo] = useState<LinkInfo>(null)
+
+  useEffect(() => {
+    if (linkUrl) {
+      getLinkInfo(linkUrl).then(setLinkInfo)
+    }
+  }, [linkUrl])
 
   if (isNsfw && !allowNsfw) {
     return null

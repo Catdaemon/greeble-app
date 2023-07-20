@@ -100,7 +100,9 @@ export default function CommunityHeader({
                   contentFit="cover"
                   contentPosition="center"
                   blurRadius={5}
-                  src={data.community_view.community.banner}
+                  source={{
+                    uri: data.community_view.community.banner
+                  }}
                 />
               </View>
             ) : (

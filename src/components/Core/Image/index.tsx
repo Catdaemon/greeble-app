@@ -2,6 +2,7 @@ import {
   Image as ExpoImage,
   ImageContentFit,
   ImageContentPosition,
+  ImageSource,
   ImageStyle
 } from 'expo-image'
 import Loader from '../Loader'
@@ -9,7 +10,7 @@ import { View } from '../View'
 import ImageLightbox from '../../MediaLightbox/ImageLightbox'
 
 export interface ImageProps {
-  src: string
+  source: ImageSource
   alt?: string
   enableLightbox?: boolean
   style: ImageStyle
@@ -19,7 +20,7 @@ export interface ImageProps {
 }
 
 export default function Image({
-  src,
+  source,
   alt,
   enableLightbox,
   style,
@@ -29,7 +30,11 @@ export default function Image({
 }: ImageProps) {
   const props = {
     source: {
-      uri: src
+      ...source,
+      headers: {
+        ...source?.headers,
+        'User-Agent': 'greeble/1'
+      }
     },
     style: style,
     // cachePolicy: 'disk' as any,
@@ -41,7 +46,7 @@ export default function Image({
   const image = enableLightbox ? (
     <ImageLightbox {...props} />
   ) : (
-    <ExpoImage {...props} />
+    <ExpoImage {...props} onError={(e) => console.log(e)} />
   )
 
   const withWrapper = (

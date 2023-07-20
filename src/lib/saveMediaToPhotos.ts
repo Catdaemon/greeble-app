@@ -1,6 +1,6 @@
 import * as FileSystem from 'expo-file-system'
+import { SaveFormat, manipulateAsync } from 'expo-image-manipulator'
 import * as MediaLibrary from 'expo-media-library'
-import { manipulateAsync, FlipType, SaveFormat } from 'expo-image-manipulator'
 import getLinkInfo from './getLinkInfo'
 import { LinkType } from './lemmy/linkInfoTypes'
 
@@ -8,8 +8,7 @@ export default async function saveMediaToPhotos(
   contentUrl: string,
   progressCallback: (progress: number) => void
 ) {
-  const linkInfo = getLinkInfo(contentUrl)
-
+  const linkInfo = await getLinkInfo(contentUrl)
   if (linkInfo.type === LinkType.Video) {
     const callback = (downloadProgress) => {
       const progress =
@@ -21,7 +20,11 @@ export default async function saveMediaToPhotos(
     const downloadResumable = FileSystem.createDownloadResumable(
       contentUrl,
       FileSystem.cacheDirectory + 'greeble-temp.mp4',
-      {},
+      {
+        headers: {
+          'User-Agent': 'greeble/1'
+        }
+      },
       callback
     )
 

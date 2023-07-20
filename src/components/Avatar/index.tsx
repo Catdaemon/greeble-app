@@ -22,7 +22,9 @@ export default function Avatar({
   return src ? (
     <Image
       enableLightbox={pressable}
-      src={src}
+      source={{
+        uri: src
+      }}
       style={{
         width: size,
         height: size,

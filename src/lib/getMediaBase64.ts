@@ -8,7 +8,7 @@ export default async function getMediaBase64(
   contentUrl: string,
   progressCallback: (progress: number) => void
 ) {
-  const linkInfo = getLinkInfo(contentUrl)
+  const linkInfo = await getLinkInfo(contentUrl)
 
   if (linkInfo.type === LinkType.Video) {
     const callback = (downloadProgress) => {
@@ -21,7 +21,11 @@ export default async function getMediaBase64(
     const downloadResumable = FileSystem.createDownloadResumable(
       contentUrl,
       FileSystem.cacheDirectory + 'greeble-temp.mp4',
-      {},
+      {
+        headers: {
+          'User-Agent': 'greeble/1'
+        }
+      },
       callback
     )
 

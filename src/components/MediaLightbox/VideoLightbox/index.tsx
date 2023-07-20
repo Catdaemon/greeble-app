@@ -1,11 +1,12 @@
 import { Video } from 'expo-av'
 import { DimensionValue } from 'react-native'
 import MediaLightbox from '..'
+import { LinkInfo, LinkSource } from '../../../lib/lemmy/linkInfoTypes'
 import Image from '../../Core/Image'
+import FullScreenLoader from '../../Core/Loader/FullScreenLoader'
 import { View } from '../../Core/View'
 import IconOverlay from '../../IconOverlay'
 import { YouTubeVideo } from '../../YouTubeVideo'
-import { LinkInfo, LinkSource } from '../../../lib/lemmy/linkInfoTypes'
 
 export interface VideoLightboxProps {
   linkInfo: LinkInfo
@@ -13,13 +14,17 @@ export interface VideoLightboxProps {
   sourceType: LinkSource
   thumbSize: DimensionValue
   square?: boolean
+  blur?: boolean
 }
 
 function RenderGenericVideo({ videoUrl }: { videoUrl: string }) {
   return (
     <Video
       source={{
-        uri: videoUrl.replace('gifv', 'mp4')
+        uri: videoUrl.replace('gifv', 'mp4'),
+        headers: {
+          'User-Agent': 'greeble/1'
+        }
       }}
       style={{
         height: '100%',
@@ -29,7 +34,9 @@ function RenderGenericVideo({ videoUrl }: { videoUrl: string }) {
       isLooping
       shouldPlay
       isMuted
-    />
+    >
+      <FullScreenLoader />
+    </Video>
   )
 }
 
@@ -61,9 +68,17 @@ export default function VideoLightbox({
   sourceType,
   thumbnailUrl,
   thumbSize = 72,
-  square = false
+  square = false,
+  blur = false
 }: VideoLightboxProps) {
   if (!linkInfo) return null
+
+  const srcProp = {
+    uri: linkInfo.thumbnailUrl ?? thumbnailUrl,
+    headers: {
+      Authorization: `Bearer ${linkInfo.bearerToken}`
+    }
+  }
 
   const thumbnail = (
     <IconOverlay
@@ -73,7 +88,8 @@ export default function VideoLightbox({
       {linkInfo.thumbnailUrl || thumbnailUrl ? (
         <Image
           contentFit="cover"
-          src={linkInfo.thumbnailUrl ?? thumbnailUrl}
+          source={srcProp}
+          blurRadius={blur ? 100 : 0}
           style={{
             aspectRatio: square ? 1 : 16 / 9,
             width: thumbSize

@@ -16,7 +16,8 @@ export const enum LinkSource {
   Bandcamp,
   GitHub,
   LinkedIn,
-  ImgurAlbum
+  ImgurAlbum,
+  RedGifs
 }
 
 export const LinkSourceIcons: Record<LinkSource, IconName> = {
@@ -35,7 +36,8 @@ export const LinkSourceIcons: Record<LinkSource, IconName> = {
   [LinkSource.Bandcamp]: 'Music',
   [LinkSource.GitHub]: 'Github',
   [LinkSource.LinkedIn]: 'Linkedin',
-  [LinkSource.ImgurAlbum]: 'MonitorPlay'
+  [LinkSource.ImgurAlbum]: 'MonitorPlay',
+  [LinkSource.RedGifs]: 'MonitorPlay'
 }
 
 export const LinkSourceNames: Record<LinkSource, string> = {
@@ -54,7 +56,8 @@ export const LinkSourceNames: Record<LinkSource, string> = {
   [LinkSource.Bandcamp]: 'Bandcamp',
   [LinkSource.GitHub]: 'GitHub',
   [LinkSource.LinkedIn]: 'LinkedIn',
-  [LinkSource.ImgurAlbum]: 'Imgur'
+  [LinkSource.ImgurAlbum]: 'Imgur',
+  [LinkSource.RedGifs]: 'RedGifs'
 }
 
 export const LinkSourceRegex: Record<LinkSource, RegExp> = {
@@ -87,7 +90,7 @@ export const LinkSourceRegex: Record<LinkSource, RegExp> = {
   [LinkSource.LinkedIn]:
     /(?:https?:\/\/)?(?:www\.)?(?:linkedin\.com)\/(?:watch\?v=)?(.+)/,
   [LinkSource.ImgurAlbum]: /https?:\/\/(?:www\.)?imgur\.com\/a\/[^\s\/]+/,
-
+  [LinkSource.RedGifs]: /https?:\/\/(?:.*)?redgifs\.com\/(.*)$/,
   [LinkSource.Unknown]: /(.*)/
 }
 
@@ -107,7 +110,8 @@ export const LinkSourceColors: Record<LinkSource, string> = {
   [LinkSource.Bandcamp]: '#629AA9',
   [LinkSource.GitHub]: '#000000',
   [LinkSource.LinkedIn]: '#0A66C2',
-  [LinkSource.ImgurAlbum]: '#1BB76E'
+  [LinkSource.ImgurAlbum]: '#1BB76E',
+  [LinkSource.RedGifs]: '#FF0000'
 }
 
 export const enum LinkType {
@@ -148,7 +152,8 @@ export const LinkSourceType: Record<LinkSource, LinkType> = {
   [LinkSource.GitHub]: LinkType.Link,
   [LinkSource.LinkedIn]: LinkType.Link,
   [LinkSource.ImgurAlbum]: LinkType.ImageAlbum,
-  [LinkSource.Unknown]: LinkType.Link
+  [LinkSource.Unknown]: LinkType.Link,
+  [LinkSource.RedGifs]: LinkType.Video
 }
 
 export interface LinkInfo {
@@ -161,4 +166,5 @@ export interface LinkInfo {
   thumbnailUrl?: string
   isLocal: boolean
   color: string
+  bearerToken?: string
 }

@@ -1,8 +1,9 @@
-import * as Haptics from 'expo-haptics'
+import * as Burnt from 'burnt'
 import * as Clipboard from 'expo-clipboard'
+import * as Haptics from 'expo-haptics'
 
 import { ReactNode, useEffect, useState } from 'react'
-import { Alert, Modal, Pressable, Share } from 'react-native'
+import { Modal, Pressable, Share } from 'react-native'
 import {
   Gesture,
   GestureDetector,
@@ -17,14 +18,12 @@ import Animated, {
 } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import useActionSheet from '../../hooks/useActionSheet'
-import Icon from '../Icon'
-import getLinkInfo from '../../lib/getLinkInfo'
-import { LinkType } from '../../lib/lemmy/linkInfoTypes'
-import { View } from '../Core/View'
+import getMediaBase64 from '../../lib/getMediaBase64'
+import saveMediaToPhotos from '../../lib/saveMediaToPhotos'
 import Loader from '../Core/Loader'
 import { BodyText } from '../Core/Text'
-import saveMediaToPhotos from '../../lib/saveMediaToPhotos'
-import getMediaBase64 from '../../lib/getMediaBase64'
+import { View } from '../Core/View'
+import Icon from '../Icon'
 
 const closeDistance = 100
 const fadeDistance = 200
@@ -70,8 +69,17 @@ export default function MediaLightbox({
               setDownloadProgress(progress)
             })
             await Clipboard.setImageAsync(b64)
+            Burnt.toast({
+              haptic: 'success',
+              title: 'Copied image to clipboard',
+              duration: 2
+            })
           } catch (e) {
-            Alert.alert('Error', 'Failed to copy image')
+            Burnt.toast({
+              haptic: 'error',
+              title: 'Failed to copy image to clipboard',
+              duration: 2
+            })
           } finally {
             setShowActions(false)
             setDownloading(false)
@@ -87,8 +95,17 @@ export default function MediaLightbox({
             await saveMediaToPhotos(contentUrl, (progress) => {
               setDownloadProgress(progress)
             })
+            Burnt.toast({
+              haptic: 'success',
+              title: 'Saved to photos',
+              duration: 2
+            })
           } catch (e) {
-            Alert.alert('Error', 'Failed to save')
+            Burnt.toast({
+              haptic: 'error',
+              title: 'Failed to save',
+              duration: 2
+            })
           } finally {
             setShowActions(false)
             setDownloading(false)
