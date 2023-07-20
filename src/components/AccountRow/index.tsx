@@ -6,6 +6,7 @@ import Card from '../Card'
 import { BodyText } from '../Core/Text'
 import { View } from '../Core/View'
 import Icon from '../Icon'
+import * as Burnt from 'burnt'
 
 interface AccountRowProps {
   account: Account
@@ -46,6 +47,11 @@ export default function AccountRow({ account }: AccountRowProps) {
         gap="$0.5"
         onPress={() => {
           setActiveAccount(account.accountID)
+          Burnt.toast({
+            title: `Switched to ${account.username}`,
+            duration: 2,
+            haptic: 'success'
+          })
         }}
         row
         centerV

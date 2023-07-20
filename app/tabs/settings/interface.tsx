@@ -15,7 +15,7 @@ export default function InterfaceSettings() {
       <View gap="$0.5">
         <Stack.Screen options={{ title: 'Interface' }} />
 
-        <HeadingText marginVertical="$1">Convenience</HeadingText>
+        <HeadingText marginTop="$1">Convenience</HeadingText>
 
         <AppSetting
           label="Collapse child comments by default"
@@ -46,7 +46,7 @@ export default function InterfaceSettings() {
           icon="CheckCircle"
         />
 
-        <HeadingText marginVertical="$1">Comment swipe actions</HeadingText>
+        <HeadingText marginTop="$1">Comment swipe actions</HeadingText>
 
         <AppSetting
           label="Left comment actions"

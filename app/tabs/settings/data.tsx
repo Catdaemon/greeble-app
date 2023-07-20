@@ -12,12 +12,11 @@ import { useAppSettingsStore } from '../../../src/stores/appSettingsStore'
 import { useTemporaryStore } from '../../../src/stores/temporaryStore'
 
 export default function ContentSettings() {
-  const [allowNsfw] = useAppSettingsStore((state) => [state.allowNsfw])
   return (
     <View gap="$0.5" padding="$0.5">
       <Stack.Screen options={{ title: 'Data' }} />
 
-      <HeadingText marginVertical="$1">Clear data</HeadingText>
+      <HeadingText marginTop="$1">Clear data</HeadingText>
       <TouchableOpacity
         onPress={async () => {
           await ExpoImage.Image.clearDiskCache()
@@ -26,7 +25,7 @@ export default function ContentSettings() {
         }}
       >
         <CardRow
-          left={<Icon name="Trash2" color="$errorBackground" />}
+          left={<Icon name="Trash2" />}
           center={<BodyText>Delete image cache</BodyText>}
           right={<Icon name="ChevronRight" />}
         />
@@ -38,7 +37,7 @@ export default function ContentSettings() {
         }}
       >
         <CardRow
-          left={<Icon name="Trash2" color="$errorBackground" />}
+          left={<Icon name="Trash2" />}
           center={<BodyText>Delete post/comment cache</BodyText>}
           right={<Icon name="ChevronRight" />}
         />
@@ -72,7 +71,7 @@ export default function ContentSettings() {
         }}
       >
         <CardRow
-          left={<Icon name="Trash2" color="$errorBackground" />}
+          left={<Icon name="Trash2" />}
           center={<BodyText>Clear all app data</BodyText>}
           right={<Icon name="ChevronRight" />}
         />

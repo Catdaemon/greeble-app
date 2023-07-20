@@ -15,7 +15,7 @@ export default function AppearanceSettings() {
       <View gap="$0.5" padding="$0.5">
         <Stack.Screen options={{ title: 'Appearance' }} />
 
-        <HeadingText marginVertical="$1">Theme</HeadingText>
+        <HeadingText marginTop="$1">Theme</HeadingText>
         <AppSetting
           label="Automatic dark mode"
           setting="darkModeAuto"
@@ -25,7 +25,7 @@ export default function AppearanceSettings() {
           <AppSetting label="Dark mode" setting="darkMode" icon="Moon" />
         )}
 
-        <HeadingText marginVertical="$1">Layout</HeadingText>
+        <HeadingText marginTop="$1">Layout</HeadingText>
         <AppSetting
           label="Show post titles at the top of cards"
           setting="postTitleAtTop"
@@ -44,7 +44,7 @@ export default function AppearanceSettings() {
           />
         )}
 
-        <HeadingText marginVertical="$1">Information density</HeadingText>
+        <HeadingText marginTop="$1">Information density</HeadingText>
 
         <AppSetting
           label="Show server for local users"

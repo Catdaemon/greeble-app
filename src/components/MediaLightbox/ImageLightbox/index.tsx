@@ -1,10 +1,13 @@
 import { Image, ImageProps } from 'expo-image'
-import { useAppSettingsStore } from '../../../stores/appSettingsStore'
-import Icon from '../../Icon'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import MediaLightbox from '..'
+import { useAppSettingsStore } from '../../../stores/appSettingsStore'
+import { View } from '../../Core/View'
+import Icon from '../../Icon'
 
 export default function ImageLightbox(props: ImageProps) {
   const [loadImage] = useAppSettingsStore((state) => [state.loadPostImages])
+  const safeArea = useSafeAreaInsets()
 
   const sourceAsString =
     typeof props.source === 'string'
@@ -28,14 +31,22 @@ export default function ImageLightbox(props: ImageProps) {
   )
 
   const image = (
-    <Image
-      source={props.source}
-      contentFit="contain"
-      style={{
-        flex: 1
-      }}
-      cachePolicy="disk"
-    />
+    <View
+      flex
+      paddingTop={safeArea.top}
+      paddingBottom={safeArea.bottom}
+      paddingLeft={safeArea.left}
+      paddingRight={safeArea.right}
+    >
+      <Image
+        source={props.source}
+        contentFit="contain"
+        style={{
+          flex: 1
+        }}
+        cachePolicy="disk"
+      />
+    </View>
   )
 
   return (

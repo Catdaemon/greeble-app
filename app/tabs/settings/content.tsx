@@ -11,7 +11,7 @@ export default function ContentSettings() {
       <Stack.Screen options={{ title: 'Content' }} />
 
       <HeadingText marginTop="$1">Adult content</HeadingText>
-      <BodyText bold marginTop="$1">
+      <BodyText>
         Your Lemmy instance/account may also restrict this content.
       </BodyText>
       <AppSetting
@@ -27,10 +27,7 @@ export default function ContentSettings() {
         />
       )}
 
-      <HeadingText marginTop="$1">Content loading</HeadingText>
-      <BodyText bold marginTop="$1">
-        Disabling these will reduce data usage.
-      </BodyText>
+      <HeadingText marginTop="$1">Images</HeadingText>
       <AppSetting
         label="Load feed post images"
         setting="loadPostImages"

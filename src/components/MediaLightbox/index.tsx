@@ -13,6 +13,7 @@ import Animated, {
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
+  withDelay,
   withSpring,
   withTiming
 } from 'react-native-reanimated'
@@ -59,6 +60,8 @@ export default function MediaLightbox({
   const zoomPointY = useSharedValue(0)
   const zoomAmountStart = useSharedValue(1)
   const zoomAmount = useSharedValue(1)
+
+  const controlsOpacity = useSharedValue(1)
 
   const showActionSheet = useActionSheet(
     null,
@@ -134,6 +137,9 @@ export default function MediaLightbox({
     .onStart((e) => {
       dragStartX.value = dragX.value
       dragStartY.value = dragY.value
+      controlsOpacity.value = withTiming(1, {
+        duration: 200
+      })
     })
     .onChange((e) => {
       dragX.value = dragStartX.value + e.translationX
@@ -160,6 +166,13 @@ export default function MediaLightbox({
       } else {
         opacity.value = 1
       }
+
+      controlsOpacity.value = withDelay(
+        2000,
+        withTiming(0, {
+          duration: 200
+        })
+      )
     })
 
   const zoomGesture = Gesture.Pinch()
@@ -260,6 +273,10 @@ export default function MediaLightbox({
     }
   }, [showActions])
 
+  useEffect(() => {
+    controlsOpacity.value = withDelay(1000, withTiming(0, { duration: 200 }))
+  }, [])
+
   const downloadingOverlay = downloading ? (
     <Modal animationType="none" transparent={true} visible={true}>
       <View
@@ -309,14 +326,20 @@ export default function MediaLightbox({
                     onPress={() => setOpen(false)}
                     style={{
                       position: 'absolute',
-                      top: safeAreaInsets.top + 16,
-                      left: safeAreaInsets.left + 16,
+                      top: safeAreaInsets.top,
+                      left: safeAreaInsets.left,
                       width: 32,
                       height: 32,
                       zIndex: 100
                     }}
                   >
-                    <Icon name="X" size={32} color="lightText" />
+                    <Animated.View
+                      style={{
+                        opacity: controlsOpacity
+                      }}
+                    >
+                      <Icon name="X" size={32} color="lightText" />
+                    </Animated.View>
                   </Pressable>
                   <Animated.View style={animatedImageStyle}>
                     {content}
