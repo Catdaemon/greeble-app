@@ -7,6 +7,7 @@ import FullScreenLoader from '../../Core/Loader/FullScreenLoader'
 import { View } from '../../Core/View'
 import IconOverlay from '../../IconOverlay'
 import { YouTubeVideo } from '../../YouTubeVideo'
+import { useAppSettingsStore } from '../../../stores/appSettingsStore'
 
 export interface VideoLightboxProps {
   linkInfo: LinkInfo
@@ -71,6 +72,9 @@ export default function VideoLightbox({
   square = false,
   blur = false
 }: VideoLightboxProps) {
+  const handleYouTube = useAppSettingsStore(
+    (state) => state.handleYouTubeVideos
+  )
   if (!linkInfo) return null
 
   const srcProp = {
@@ -111,6 +115,7 @@ export default function VideoLightbox({
         content={content}
         thumbnail={thumbnail}
         contentUrl={linkInfo.url}
+        enableLightbox={handleYouTube || linkInfo.source !== LinkSource.YouTube}
       />
     </>
   )

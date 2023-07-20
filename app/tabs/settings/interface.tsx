@@ -34,6 +34,11 @@ export default function InterfaceSettings() {
           setting="openLinksInApp"
           icon="Compass"
         />
+        <AppSetting
+          label="Open YouTube videos in-app"
+          setting="handleYouTubeVideos"
+          icon="Youtube"
+        />
 
         <AppSetting
           label="Mark posts read on open"

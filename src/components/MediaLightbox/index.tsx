@@ -24,6 +24,7 @@ import Loader from '../Core/Loader'
 import { BodyText } from '../Core/Text'
 import { View } from '../Core/View'
 import Icon from '../Icon'
+import openLink from '../../lib/openLink'
 
 const closeDistance = 50
 const fadeDistance = 200
@@ -32,12 +33,14 @@ export interface MediaLightboxProps {
   thumbnail: ReactNode
   content: ReactNode
   contentUrl: string
+  enableLightbox?: boolean
 }
 
 export default function MediaLightbox({
   thumbnail,
   content,
-  contentUrl
+  contentUrl,
+  enableLightbox = true
 }: MediaLightboxProps) {
   const safeAreaInsets = useSafeAreaInsets()
   const [open, setOpen] = useState(false)
@@ -285,7 +288,11 @@ export default function MediaLightbox({
 
   return (
     <>
-      <Pressable onPress={() => setOpen(true)}>{thumbnail}</Pressable>
+      <Pressable
+        onPress={() => (enableLightbox ? setOpen(true) : openLink(contentUrl))}
+      >
+        {thumbnail}
+      </Pressable>
       {render && (
         <>
           <Modal

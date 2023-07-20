@@ -23,6 +23,7 @@ export interface AppSettingsStoreState {
   postTitleAtTop: boolean
   postThumbnailRight: boolean
   markPostsReadOnOpen: boolean
+  handleYouTubeVideos: boolean
 
   leftCommentActions: boolean
   leftCommentUpvote: boolean
@@ -68,6 +69,7 @@ const defaultState: AppSettingsStoreState = {
   postTitleAtTop: false,
   postThumbnailRight: false,
   markPostsReadOnOpen: true,
+  handleYouTubeVideos: true,
 
   leftCommentActions: false,
   leftCommentUpvote: false,
