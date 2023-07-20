@@ -111,7 +111,7 @@ export default function Welcome() {
       case 1:
         return <AccountSetup onNext={() => setActiveIndex(2)} />
       case 2:
-        return <SettingsStep onNext={() => router.replace('/feed/')} />
+        return <SettingsStep onNext={() => router.replace('/tabs/feed/')} />
     }
   }
 

@@ -124,7 +124,9 @@ const renderFuncs: Record<
   paragraph: (token: marked.Tokens.Paragraph, children) => (
     <BodyText marginVertical="$0.5">{children}</BodyText>
   ),
-  html: (token: marked.Tokens.HTML, children) => <BodyText>html</BodyText>,
+  html: (token: marked.Tokens.HTML, children) => (
+    <BodyText>{children}</BodyText>
+  ),
   text: (token: marked.Tokens.Text, children) => (
     <Text>
       {token.raw}
@@ -140,7 +142,7 @@ const renderFuncs: Record<
     </BodyText>
   ),
   escape: (token: marked.Tokens.Escape, children) => (
-    <BodyText>escape {token.raw}</BodyText>
+    <BodyText>{token.raw}</BodyText>
   ),
   image: (token: marked.Tokens.Image, children, registerLink) => {
     registerLink(token.title, token.href, 'image')
@@ -150,7 +152,9 @@ const renderFuncs: Record<
       return (
         <Image
           enableLightbox
-          src={token.href}
+          source={{
+            uri: token.href
+          }}
           contentFit="contain"
           style={{
             width: '100%',
@@ -234,7 +238,7 @@ export default function MarkdownView({ content }: MarkdownViewProps) {
   ])
   const links = useRef<Link[]>([])
 
-  const renderedMarkdown = useMemo(() => {
+  const renderMarkdown = () => {
     links.current = []
     const _links: Link[] = []
     const registerLink = (text: string, href: string) => {
@@ -256,15 +260,16 @@ export default function MarkdownView({ content }: MarkdownViewProps) {
     )
     links.current = _links
     return renderedMarkdown
-  }, [content, showLinkBlock])
+  }
 
   return (
     <View
       style={{
-        gap: 16
+        gap: 16,
+        flex: 1
       }}
     >
-      <View>{renderedMarkdown}</View>
+      <View>{renderMarkdown()}</View>
       {links.current.length > 0 && (
         <View paddingTop="$0.5" gap="$0.5">
           {links.current.map((link, i) => (

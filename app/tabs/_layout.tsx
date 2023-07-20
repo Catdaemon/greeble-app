@@ -1,5 +1,4 @@
-import { Tabs, useRouter } from 'expo-router'
-import { useEffect } from 'react'
+import { Tabs } from 'expo-router'
 import { shallow } from 'zustand/shallow'
 import Icon from '../../src/components/Icon'
 import { useAccountStore } from '../../src/stores/accountStore'

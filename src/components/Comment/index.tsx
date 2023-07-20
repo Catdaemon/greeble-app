@@ -386,7 +386,10 @@ export default function Comment({
             //     renderItem={({ item }) => <Comment {...item} />}
             //   />
             // </View>
-            <View marginLeft="$0.5" display={renderCollapsed ? 'flex' : 'none'}>
+            <View
+              marginLeft="$0.5"
+              display={renderCollapsed ? undefined : 'none'}
+            >
               {children.map((child) => (
                 <Comment {...child} key={`reply-${child.path}`} />
               ))}

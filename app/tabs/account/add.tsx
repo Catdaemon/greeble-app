@@ -1,9 +1,8 @@
 import { Stack, useRouter } from 'expo-router'
 import { useEffect, useState } from 'react'
-import { ActivityIndicator } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
-import { RadioGroup, XStack, useTheme } from 'tamagui'
+import { RadioGroup, XStack } from 'tamagui'
 import Card from '../../../src/components/Card'
 import Button from '../../../src/components/Core/Button'
 import { BodyText, HeadingText } from '../../../src/components/Core/Text'
@@ -14,7 +13,6 @@ import TextInput from '../../../src/components/TextInput'
 import { lemmyFetcherFunc } from '../../../src/lib/lemmy/fetchers'
 import { useLogin } from '../../../src/lib/lemmy/rqHooks'
 import { useAccountStore } from '../../../src/stores/accountStore'
-import Loader from '../../../src/components/Core/Loader'
 
 const suggestedServers = [
   'lemmy.ml',
@@ -47,7 +45,6 @@ function sanitiseServerUrl(serverUrl: string) {
 }
 
 export default function AddAccount() {
-  const theme = useTheme()
   const router = useRouter()
   const { mutateAsync, isLoading, isError } = useLogin()
   const [addAccount, setActiveAccount, accounts] = useAccountStore((state) => [
