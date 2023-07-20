@@ -19,6 +19,7 @@ import getPostUsername from '../../src/lib/lemmy/util/getPostUsername'
 import { useAccountStore } from '../../src/stores/accountStore'
 import queryKeys from '../../src/lib/lemmy/rqKeys'
 import { useAppSettingsStore } from '../../src/stores/appSettingsStore'
+import PostActions from '../../src/components/Post/PostActions'
 
 function listFooter(
   isLoading: boolean,
@@ -171,6 +172,7 @@ export default function CommentsScreen() {
                   body={postData.post_view.post.body}
                   renderBody
                 />
+                <PostActions post={postData.post_view} />
               </>
             )
           }}
