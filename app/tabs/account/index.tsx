@@ -12,6 +12,7 @@ import useActiveAccount from '../../../src/hooks/useActiveAccount'
 import { useLemmyQuery } from '../../../src/lib/lemmy/rqHooks'
 import { Account, useAccountStore } from '../../../src/stores/accountStore'
 import queryKeys from '../../../src/lib/lemmy/rqKeys'
+import CardRow from '../../../src/components/CardRow'
 
 export default function AccountScreen() {
   const router = useRouter()
@@ -52,27 +53,34 @@ export default function AccountScreen() {
       />
       <ScrollView flex={1}>
         {activeAccount && (
-          <Card center padding="$2" marginBottom="$1" gap="$1">
-            <HeadingText>Active account</HeadingText>
-            {!activeAccount.token ? (
-              <Icon name="VenetianMask" size="$4" color="$fadedText" />
-            ) : (
-              <Avatar
-                size={128}
-                src={myAccountData?.my_user?.local_user_view.person.avatar}
-                placeholderIcon="User"
-              />
-            )}
-            <View center>
-              <HeadingText>{activeAccount.username}</HeadingText>
-              <BodyText>{activeAccount.serverURL}</BodyText>
-            </View>
-          </Card>
+          <>
+            <Card center padding="$2" marginBottom="$0.5" gap="$1">
+              <HeadingText>Active account</HeadingText>
+              {!activeAccount.token ? (
+                <Icon name="VenetianMask" size="$4" color="$fadedText" />
+              ) : (
+                <Avatar
+                  size={128}
+                  src={myAccountData?.my_user?.local_user_view.person.avatar}
+                  placeholderIcon="User"
+                />
+              )}
+              <View center>
+                <HeadingText>{activeAccount.username}</HeadingText>
+                <BodyText>{activeAccount.serverURL}</BodyText>
+              </View>
+            </Card>
+            <CardRow
+              left={<Icon name="Ban" />}
+              center={<BodyText>Manage block lists</BodyText>}
+              right={<Icon name="ChevronRight" />}
+            />
+          </>
         )}
-        <View flex gap="$2">
+        <View flex gap="$1" marginTop="$1">
           {Object.keys(accountsByServer).map((serverURL) => (
             <View key={serverURL} gap="$1">
-              <HeadingText>{serverURL}</HeadingText>
+              <BodyText>{new URL(serverURL).hostname}</BodyText>
               {accountsByServer[serverURL].map((account) => (
                 <AccountRow key={account.accountID} account={account} />
               ))}
