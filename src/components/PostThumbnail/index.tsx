@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DimensionValue, Pressable, View } from 'react-native'
 import { useTheme } from 'tamagui'
 import getLinkInfo from '../../lib/getLinkInfo'

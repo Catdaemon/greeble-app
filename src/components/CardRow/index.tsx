@@ -9,7 +9,7 @@ export interface CardRowProps {
 
 export default function CardRow({ left, center, right }) {
   return (
-    <Card row spread centerV padding="$1">
+    <Card row spread centerV padding="$0.5">
       <View row flex centerV gap="$0.5">
         {left}
         {center}
