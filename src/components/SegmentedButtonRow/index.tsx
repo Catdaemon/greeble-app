@@ -1,4 +1,4 @@
-import { XGroup } from 'tamagui'
+import { ScrollView, XGroup } from 'tamagui'
 import Button from '../Core/Button'
 import { useEffect, useState } from 'react'
 
@@ -11,12 +11,14 @@ export interface SegmentedButtonRowProps<OptionIdType> {
   options: SegmentedButtonOption<OptionIdType>[]
   selectedId?: OptionIdType
   onSelectedChanged?: (id: OptionIdType) => void
+  scroll?: boolean
 }
 
 export default function SegmentedButtonRow<OptionIdType>({
   options,
   selectedId,
-  onSelectedChanged
+  onSelectedChanged,
+  scroll
 }: SegmentedButtonRowProps<OptionIdType>) {
   const [selected, setSelected] = useState(selectedId)
 
@@ -24,7 +26,7 @@ export default function SegmentedButtonRow<OptionIdType>({
     setSelected(selectedId)
   }, [selectedId])
 
-  return (
+  const content = (
     <XGroup marginVertical="$1" marginHorizontal="$0.5">
       {options.map((option) => (
         <Button
@@ -40,4 +42,6 @@ export default function SegmentedButtonRow<OptionIdType>({
       ))}
     </XGroup>
   )
+
+  return scroll ? <ScrollView horizontal>{content}</ScrollView> : content
 }

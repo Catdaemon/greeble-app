@@ -159,7 +159,7 @@ which server to use. You can do so anonymously if you want.
                   {suggestedServers.map((url) => (
                     <Button
                       key={url}
-                      size="small"
+                      size="medium"
                       variant="secondary"
                       onPress={() => setServerUrl(url)}
                       label={url}
