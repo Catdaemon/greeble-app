@@ -23,5 +23,22 @@ export default function ImageLightbox(props: ImageProps) {
     />
   )
 
-  return <MediaLightbox content={image} thumbnail={imageThumb} />
+  const sourceAsString =
+    typeof props.source === 'string'
+      ? props.source
+      : Array.isArray(props.source)
+      ? typeof props.source[0] === 'string'
+        ? props.source[0]
+        : props.source[0].uri
+      : typeof props.source === 'object'
+      ? props.source.uri
+      : ''
+
+  return (
+    <MediaLightbox
+      content={image}
+      thumbnail={imageThumb}
+      contentUrl={sourceAsString}
+    />
+  )
 }

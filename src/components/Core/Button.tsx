@@ -73,7 +73,7 @@ export default function Button({
       }}
     >
       {loading ? (
-        <Loader />
+        <Loader micro />
       ) : (
         label && (
           <BodyText color={variantTextColors[variant]} fontSize={textSizeVal}>

@@ -15,9 +15,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.catdaemon.greeble"
@@ -30,7 +28,15 @@
       "package": "com.catdaemon.greeble"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow Greeble to access your photos",
+          "savePhotosPermission": "Allow Greeble to save images",
+          "isAccessMediaLocationEnabled": true
+        }
+      ]
     ],
     "extra": {
       "router": {

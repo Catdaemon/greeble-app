@@ -91,7 +91,11 @@ export default function VideoLightbox({
 
   return (
     <>
-      <MediaLightbox content={content} thumbnail={thumbnail} />
+      <MediaLightbox
+        content={content}
+        thumbnail={thumbnail}
+        contentUrl={linkInfo.url}
+      />
     </>
   )
 }
