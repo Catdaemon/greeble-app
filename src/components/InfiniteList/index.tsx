@@ -57,18 +57,6 @@ export default function InfiniteList<TData>(props: InfiniteListProps<TData>) {
         }
         ListHeaderComponent={props.headerComponent}
         ListFooterComponent={props.footerComponent}
-        onScrollToTop={(ev) => {
-          if (ev.nativeEvent.contentOffset.y < 50) {
-            // Scroll back
-            // TODO: test
-            listRef.current.scrollToOffset({
-              animated: true,
-              offset: originalScrollPosition.current
-            })
-          } else {
-            originalScrollPosition.current = ev.nativeEvent.contentOffset.y
-          }
-        }}
       />
     </View>
   )

@@ -150,12 +150,20 @@ export default function SubscriptionDrawer({
         openAmountValue.value + ev.changeX / screenSizeValue.value.width
     })
     .onEnd((ev) => {
-      if (openAmountValue.value > 0.8) {
-        openAmountValue.value = withTiming(1, { duration: 200 })
-        runOnJS(setOpen)(true)
+      if (Math.abs(ev.translationX) > 100) {
+        if (ev.translationX > 0) {
+          openAmountValue.value = withTiming(1, { duration: 200 })
+          runOnJS(setOpen)(true)
+        } else {
+          openAmountValue.value = withTiming(0, { duration: 200 })
+          runOnJS(setOpen)(false)
+        }
       } else {
-        openAmountValue.value = withTiming(0, { duration: 200 })
-        runOnJS(setOpen)(false)
+        if (open) {
+          openAmountValue.value = withTiming(1, { duration: 200 })
+        } else {
+          openAmountValue.value = withTiming(0, { duration: 200 })
+        }
       }
       gestureIsActive.value = false
     })

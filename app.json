@@ -7,7 +7,7 @@
     "slug": "greeble",
     "scheme": "greebleapp",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "splash": {

@@ -44,7 +44,7 @@ export function YouTubeVideo({ videoUrl, play, autoPlay }: YoutubeVideoProps) {
             height: 1000,
             playerVars: {
               modestbranding: true,
-              fs: true,
+              fs: false,
               playsinline: 1,
               origin: window.location.origin
             },

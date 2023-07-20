@@ -25,7 +25,7 @@ import { BodyText } from '../Core/Text'
 import { View } from '../Core/View'
 import Icon from '../Icon'
 
-const closeDistance = 100
+const closeDistance = 50
 const fadeDistance = 200
 
 export interface MediaLightboxProps {
@@ -288,7 +288,12 @@ export default function MediaLightbox({
       <Pressable onPress={() => setOpen(true)}>{thumbnail}</Pressable>
       {render && (
         <>
-          <Modal animationType="none" transparent={true} visible={true}>
+          <Modal
+            animationType="none"
+            transparent={true}
+            visible={true}
+            supportedOrientations={['portrait', 'landscape']}
+          >
             {downloadingOverlay}
             <GestureHandlerRootView style={{ flex: 1 }}>
               <GestureDetector gesture={gestures}>
