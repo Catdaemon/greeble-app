@@ -101,6 +101,7 @@ export default function RootLayout() {
                         title: 'User',
                         headerShown: true
                       }}
+                      getId={({ params }) => params.user}
                     />
                     <Stack.Screen
                       name="message/compose"
@@ -123,12 +124,14 @@ export default function RootLayout() {
                       options={{
                         title: 'Post Comments'
                       }}
+                      getId={({ params }) => params.postId}
                     />
                     <Stack.Screen
                       name="community/[community]"
                       options={{
                         title: 'Community'
                       }}
+                      getId={({ params }) => params.community}
                     />
                   </Stack>
                 </NavThemeProvider>
