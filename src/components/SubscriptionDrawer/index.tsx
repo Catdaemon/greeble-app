@@ -146,8 +146,10 @@ export default function SubscriptionDrawer({
       state.fail()
     })
     .onChange((ev) => {
-      openAmountValue.value =
+      openAmountValue.value = Math.min(
+        1,
         openAmountValue.value + ev.changeX / screenSizeValue.value.width
+      )
     })
     .onEnd((ev) => {
       if (Math.abs(ev.translationX) > 100) {
