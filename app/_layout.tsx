@@ -98,7 +98,6 @@ export default function RootLayout() {
                     <Stack.Screen
                       name="user/[user]"
                       options={{
-                        presentation: 'modal',
                         title: 'User',
                         headerShown: true
                       }}

@@ -18,6 +18,8 @@ import Icon from '../Icon'
 import MarkdownView from '../MarkdownView'
 import SwipeyActions, { SwipeyAction } from '../SwipeyActions'
 import TextWithIcon from '../TextWithIcon'
+import useActiveAccount from '../../hooks/useActiveAccount'
+import useActiveAccountData from '../../hooks/useActiveAccountData'
 
 // colors to use for comment depth
 const commentColorSequence = [
@@ -45,6 +47,7 @@ export interface CommentProps {
   id: string
   onActionPerformed: () => void
   onReplyPressed?: () => void
+  onEditPressed?: () => void
   path: string
   author: ReactNode
   body: string
@@ -59,6 +62,8 @@ export interface CommentProps {
   isOP?: boolean
   isMod?: boolean
   isAdmin?: boolean
+  isMe?: boolean
+  embeddedButton?: ReactNode
   startCollapsed?: boolean
 }
 
@@ -157,6 +162,7 @@ export default function Comment({
   id,
   onActionPerformed,
   onReplyPressed,
+  onEditPressed,
   author,
   body,
   replyCount,
@@ -169,7 +175,9 @@ export default function Comment({
   isOP,
   isMod,
   isAdmin,
+  isMe,
   date,
+  embeddedButton,
   startCollapsed
 }: CommentProps) {
   const [collapsed, setCollapsed] = useState(startCollapsed)
@@ -181,7 +189,7 @@ export default function Comment({
   const heightAmount = useSharedValue(1)
   const opacityAmount = useSharedValue(1)
 
-  const showActionSheet = useActionSheet('Comment actions', [
+  const commentActions = [
     {
       title: 'Reply',
       action: () => {
@@ -228,7 +236,22 @@ export default function Comment({
       title: 'Report',
       action: async () => {}
     }
-  ])
+  ]
+
+  const showActionSheet = useActionSheet(
+    'Comment actions',
+    isMe
+      ? [
+          {
+            title: 'Edit',
+            action: () => {
+              onEditPressed?.()
+            }
+          },
+          ...commentActions
+        ]
+      : commentActions
+  )
 
   useEffect(() => {
     if (collapsed) {
@@ -278,6 +301,11 @@ export default function Comment({
   const header = (
     <View flex row spread gap="$0.5">
       <View flex row gap="$0.25">
+        {isMe && (
+          <BodyText bold color="$primaryColor">
+            |
+          </BodyText>
+        )}
         {author}
         {isOP && (
           <BodyText bold color="$opColor">
@@ -313,6 +341,7 @@ export default function Comment({
       backgroundColor="$contentBackground"
     >
       {header}
+      {embeddedButton && <View>{embeddedButton}</View>}
       <View>
         <MarkdownView content={body} />
       </View>

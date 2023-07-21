@@ -251,3 +251,22 @@ namespace Lemmy.Requests.EditComment {
   }
   export interface Response extends CommentResponse {}
 }
+namespace Lemmy.Requests.GetMentions {
+  export interface Request extends Auth {
+    limit?: number
+    page?: number
+    sort?: Lemmy.Enums.SortType
+  }
+  export interface Response {
+    mentions: {
+      person_mention: {
+        comment_id: string
+        id: string
+        read: boolean
+        recipient_id: string
+      }
+      comment: Lemmy.Objects.Comment
+      post: Lemmy.Objects.Post
+    }[]
+  }
+}

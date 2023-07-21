@@ -64,8 +64,8 @@ export default function UserScreen() {
     <View flex>
       <Stack.Screen
         options={{
-          presentation: 'modal',
           title: data.person_view.person.name,
+          fullScreenGestureEnabled: true,
           headerRight: (props) => {
             return (
               <View row centerV gap="$1">

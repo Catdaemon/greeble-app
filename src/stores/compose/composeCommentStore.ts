@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 
 export interface ComposeCommentStoreState {
+  editingId?: string
   replyingToComment?: Lemmy.Data.CommentData
   replyingToPost?: Lemmy.Data.PostData
   message: string

@@ -9,6 +9,10 @@ import InfiniteList, { InfiniteListImplementation } from '..'
 import queryKeys from '../../../lib/lemmy/rqKeys'
 import { useComposeCommentStore } from '../../../stores/compose/composeCommentStore'
 import { router } from 'expo-router'
+import useActiveAccountData from '../../../hooks/useActiveAccountData'
+import { BodyText } from '../../Core/Text'
+import Icon from '../../Icon'
+import { Pressable } from 'react-native'
 
 const renderListItem = (item, index) => {
   return <Comment {...item} />
@@ -96,6 +100,9 @@ export default function CommentsList({
     }
   )
 
+  const activeAccount = useActiveAccountData()
+  const myAccountId = activeAccount?.accountData?.person?.id
+
   const commentPropsTree = useMemo(() => {
     const commentsAsProps =
       data?.map(
@@ -107,6 +114,14 @@ export default function CommentsList({
               useComposeCommentStore.setState({
                 message: '',
                 replyingToComment: x
+              })
+              router.push('/comment/compose')
+            },
+            onEditPressed: () => {
+              useComposeCommentStore.setState({
+                editingId: x.comment.id,
+                message: x.comment.content,
+                replyingToComment: null
               })
               router.push('/comment/compose')
             },
@@ -124,7 +139,26 @@ export default function CommentsList({
             isMod: communityData?.moderators.some(
               (m) => m.moderator.id == x.comment.creator_id
             ),
+            isMe: x.comment.creator_id === myAccountId,
             depth: 0,
+            embeddedButton: !flattenTree ? undefined : (
+              <Pressable onPress={() => router.push(`/comments/${x.post.id}`)}>
+                <View
+                  row
+                  borderRadius={4}
+                  borderColor="$fadedText"
+                  borderWidth={1}
+                  padding="$0.5"
+                  gap="$1"
+                  centerV
+                >
+                  <Icon name="Forward" color="$fadedText" />
+                  <BodyText flex numberOfLines={1}>
+                    {x.post.name}
+                  </BodyText>
+                </View>
+              </Pressable>
+            ),
             children: []
           } as CommentProps)
       ) ?? []
@@ -132,7 +166,7 @@ export default function CommentsList({
       ? commentsAsProps
       : buildCommentTree(commentsAsProps, collapseChildren)
     return tree
-  }, [data, collapseChildren, communityData])
+  }, [data, collapseChildren, communityData, myAccountId])
 
   return (
     <View flex width="100%">

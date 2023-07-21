@@ -207,6 +207,12 @@ const fetchers = {
       method: 'PUT',
       endpoint: '/comment',
       payload
+    }),
+  getMentions: (payload: Lemmy.Requests.GetMentions.Request) =>
+    lemmyFetcherFunc<Lemmy.Requests.GetMentions.Response>({
+      method: 'GET',
+      endpoint: '/user/mention',
+      payload
     })
 }
 

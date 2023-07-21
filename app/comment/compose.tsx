@@ -14,15 +14,16 @@ import getPostUsername from '../../src/lib/lemmy/util/getPostUsername'
 import { useComposeCommentStore } from '../../src/stores/compose/composeCommentStore'
 
 export default function ComposeCommentScreen() {
-  const [message, replyingToComment, replyingToPost, setMessage] =
+  const [message, replyingToComment, replyingToPost, setMessage, editingId] =
     useComposeCommentStore((state) => [
       state.message,
       state.replyingToComment,
       state.replyingToPost,
-      state.setMessage
+      state.setMessage,
+      state.editingId
     ])
 
-  const { mutateAsync: addComment, isLoading } = useLemmyMutation(
+  const { mutateAsync: addComment, isLoading: addLoading } = useLemmyMutation(
     'addComment',
     [
       queryKeys.POSTCOMMENTS,
@@ -30,16 +31,31 @@ export default function ComposeCommentScreen() {
     ]
   )
 
+  const { mutateAsync: editComment, isLoading: editLoading } = useLemmyMutation(
+    'editComment',
+    [
+      queryKeys.POSTCOMMENTS,
+      replyingToPost?.post?.id ?? replyingToComment?.post?.id
+    ]
+  )
+
   const onSendPressed = async () => {
-    await addComment({
-      post_id: replyingToPost?.post?.id ?? replyingToComment?.post?.id,
-      parent_id: replyingToComment?.comment?.id,
-      content: message
-    })
+    if (editingId) {
+      await editComment({
+        comment_id: editingId,
+        content: message
+      })
+    } else {
+      await addComment({
+        post_id: replyingToPost?.post?.id ?? replyingToComment?.post?.id,
+        parent_id: replyingToComment?.comment?.id,
+        content: message
+      })
+    }
     router.back()
   }
 
-  if (isLoading) {
+  if (addLoading || editLoading) {
     return <FullScreenLoader />
   }
 
@@ -53,6 +69,7 @@ export default function ComposeCommentScreen() {
     >
       <Stack.Screen
         options={{
+          title: editingId ? 'Edit comment' : 'Compose comment',
           headerRight: () => (
             <Pressable onPress={onSendPressed}>
               <Icon name="Send" />
