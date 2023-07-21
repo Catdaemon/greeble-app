@@ -68,7 +68,8 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView
       style={{
-        flex: 1
+        flex: 1,
+        backgroundColor: isDarkMode ? '#1A1A1A' : '#fff'
       }}
     >
       <SafeAreaProvider>

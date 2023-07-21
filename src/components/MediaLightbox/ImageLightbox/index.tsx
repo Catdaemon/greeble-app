@@ -44,7 +44,7 @@ export default function ImageLightbox(props: ImageProps) {
         style={{
           flex: 1
         }}
-        cachePolicy="disk"
+        // cachePolicy="disk"
       />
     </View>
   )

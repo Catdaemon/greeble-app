@@ -1,4 +1,4 @@
-import { ReactNode, useMemo } from 'react'
+import { ReactNode, useEffect, useMemo } from 'react'
 import { Popover } from 'tamagui'
 import useActiveAccount from '../../hooks/useActiveAccount'
 import { Account, useAccountStore } from '../../stores/accountStore'
@@ -33,6 +33,10 @@ export default function AccountSwitcher({
       })
     return accountsGroupedByServerUrl
   }, [accounts, activeAccount])
+
+  useEffect(() => {
+    onOpenChanged(false)
+  }, [activeAccount])
 
   return (
     <Popover open={open} onOpenChange={onOpenChanged} placement={placement}>

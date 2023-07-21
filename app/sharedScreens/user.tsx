@@ -120,6 +120,7 @@ export default function UserScreen() {
           <View flex>
             {data?.comments?.length > 0 ? (
               <CommentsList
+                flattenTree
                 data={data.comments}
                 refetch={refetch}
                 onCommentActionPerformed={() => {

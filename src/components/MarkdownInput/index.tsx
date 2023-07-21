@@ -104,6 +104,7 @@ export default function MarkdownInput({
             height: 100,
             paddingBottom: 64
           }}
+          autoFocus
           multiline
           value={value}
           keyboardType="default"

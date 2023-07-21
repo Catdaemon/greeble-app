@@ -23,8 +23,8 @@ namespace Lemmy.Requests.GetPosts {
     limit?: number
     page: number
     saved_only?: boolean
-    sort: Lemmy.Enums.SortType
-    type_: Lemmy.Enums.ListingType
+    sort?: Lemmy.Enums.SortType
+    type_?: Lemmy.Enums.ListingType
   }
   export interface SavedPostsRequest extends Auth {
     limit?: number
@@ -57,6 +57,7 @@ namespace Lemmy.Requests.GetComments {
     post_id?: string
     sort?: Lemmy.Enums.CommentSortType
     type_?: Lemmy.Enums.ListingType
+    saved_only?: boolean
   }
   export interface SavedCommentsRequest extends Auth {
     limit?: number

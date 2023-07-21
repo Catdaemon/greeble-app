@@ -10,6 +10,7 @@ function getNavigationTheme(light: boolean, theme: UseThemeResult) {
     ...baseTheme,
     colors: {
       ...baseTheme.colors,
+      notification: theme.primaryColor.get(),
       primary: theme.primaryColor.get(),
       text: theme.textColor.get(),
       background: theme.background.get(),

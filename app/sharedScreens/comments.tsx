@@ -24,7 +24,8 @@ import PostActions from '../../src/components/Post/PostActions'
 function listFooter(
   isLoading: boolean,
   isError: boolean,
-  isFetchingNextPage: boolean
+  isFetchingNextPage: boolean,
+  noComments: boolean
 ) {
   if (isLoading || isFetchingNextPage) {
     return <Loader />
@@ -32,6 +33,10 @@ function listFooter(
 
   if (isError) {
     return <BodyText>Something went wrong :(</BodyText>
+  }
+
+  if (noComments) {
+    return <BodyText>No comments here - be the first!</BodyText>
   }
 
   return <BodyText>End of comments</BodyText>
@@ -178,7 +183,12 @@ export default function CommentsScreen() {
           }}
           footerComponent={() => (
             <CenteredView padding="$2">
-              {listFooter(isLoading, isError, isFetchingNextPage)}
+              {listFooter(
+                isLoading,
+                isError,
+                isFetchingNextPage,
+                allComments?.length === 0
+              )}
             </CenteredView>
           )}
         />

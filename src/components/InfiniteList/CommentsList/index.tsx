@@ -66,6 +66,7 @@ function buildCommentTree(comments: CommentProps[], collapseChildren: boolean) {
 export interface CommentsListProps
   extends InfiniteListImplementation<Lemmy.Data.CommentData> {
   opUserId?: string
+  flattenTree?: boolean
   onCommentActionPerformed: () => void
 }
 
@@ -73,6 +74,7 @@ export default function CommentsList({
   opUserId,
   data,
   onCommentActionPerformed,
+  flattenTree = false,
   ...props
 }: CommentsListProps) {
   const collapseChildren = useAppSettingsStore(
@@ -126,7 +128,9 @@ export default function CommentsList({
             children: []
           } as CommentProps)
       ) ?? []
-    const tree = buildCommentTree(commentsAsProps, collapseChildren)
+    const tree = flattenTree
+      ? commentsAsProps
+      : buildCommentTree(commentsAsProps, collapseChildren)
     return tree
   }, [data, collapseChildren, communityData])
 
@@ -138,9 +142,11 @@ export default function CommentsList({
         data={commentPropsTree}
         refetch={refetch}
         isRefetching={isRefetching}
-        keyExtractor={(item) =>
-          `comment-${item.path}${item.id}${(item as any).page}`
-        }
+        keyExtractor={(item) => {
+          return `comment-${item.date}${item.path}${item.id}${
+            (item as any).page
+          }`
+        }}
         renderItem={renderListItem}
       />
     </View>
