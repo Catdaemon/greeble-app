@@ -22,15 +22,8 @@ export default function CachedImage(props: ImageProps) {
   const withWrapper = (
     <View style={props.style}>
       {fileDownload.isDownloading ? (
-        <View
-          position="absolute"
-          top={0}
-          left={0}
-          aspectRatio={1}
-          style={props.style}
-          center
-        >
-          <Loader style={props.style} />
+        <View position="absolute" top={0} left={0} style={props.style} center>
+          <Loader micro />
         </View>
       ) : (
         image

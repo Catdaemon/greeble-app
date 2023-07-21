@@ -4,6 +4,7 @@ import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native'
 import { RefreshControl } from 'react-native-gesture-handler'
 import { useTheme } from 'tamagui'
 import { View } from '../Core/View'
+import { useScrollToTop } from '@react-navigation/native'
 
 interface InfiniteListProps<TData> {
   data: TData[]
@@ -28,8 +29,9 @@ export type InfiniteListImplementation<TData> = Omit<
 export default function InfiniteList<TData>(props: InfiniteListProps<TData>) {
   const theme = useTheme()
   const indicatorColor = theme.primaryColor.get()
-  const originalScrollPosition = useRef(0)
   const listRef = useRef<FlashList<TData>>(null)
+
+  useScrollToTop(listRef)
 
   return (
     <View flex>

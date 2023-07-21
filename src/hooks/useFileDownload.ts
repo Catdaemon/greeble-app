@@ -55,15 +55,14 @@ export default function useFileDownload(
         return
       }
 
-      console.log(url)
-
       const destinationUri = await getUrlDestination(url)
-      console.log('downloading', url, 'to', destinationUri)
       const dirExists = await FileSystem.getInfoAsync(CACHE_DIR)
       const fileExists = await FileSystem.getInfoAsync(destinationUri)
 
       if (!dirExists.exists) {
-        await FileSystem.makeDirectoryAsync(CACHE_DIR)
+        await FileSystem.makeDirectoryAsync(CACHE_DIR, {
+          intermediates: true
+        })
       }
 
       if (fileExists.exists) {
@@ -94,7 +93,7 @@ export default function useFileDownload(
       } catch (e) {
         setIsError(true)
         setIsDownloading(false)
-        console.error(e)
+        console.log(e)
       }
     }
     downloadFile()

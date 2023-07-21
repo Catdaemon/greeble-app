@@ -19,13 +19,17 @@ import Animated, {
 } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import useActionSheet from '../../hooks/useActionSheet'
-import getMediaBase64 from '../../lib/getMediaBase64'
-import saveMediaToPhotos from '../../lib/saveMediaToPhotos'
+import getMediaBase64, { getRemoteMediaBase64 } from '../../lib/getMediaBase64'
+import saveMediaToPhotos, {
+  saveRemoteMediaToPhotos
+} from '../../lib/saveMediaToPhotos'
 import Loader from '../Core/Loader'
 import { BodyText } from '../Core/Text'
 import { View } from '../Core/View'
 import Icon from '../Icon'
 import openLink from '../../lib/openLink'
+import getLinkInfo from '../../lib/getLinkInfo'
+import { LinkType } from '../../lib/lemmy/linkInfoTypes'
 
 const closeDistance = 50
 const fadeDistance = 200
@@ -47,6 +51,8 @@ export default function MediaLightbox({
   const [open, setOpen] = useState(false)
   const [render, setRender] = useState(false)
   const [showActions, setShowActions] = useState(false)
+  const [downloadProgress, setDownloadProgress] = useState(0)
+  const [downloading, setDownloading] = useState(false)
 
   const opacity = useSharedValue(0)
   const dragStartX = useSharedValue(0)
@@ -67,9 +73,18 @@ export default function MediaLightbox({
       {
         title: 'Copy',
         action: async () => {
+          const linkInfo = await getLinkInfo(contentUrl)
           try {
-            const b64 = await getMediaBase64(contentUrl)
-            await Clipboard.setImageAsync(b64)
+            if (linkInfo.type === LinkType.Video) {
+              setDownloading(true)
+              const b64 = await getRemoteMediaBase64(contentUrl, (progress) => {
+                setDownloadProgress(progress)
+              })
+              await Clipboard.setImageAsync(b64)
+            } else {
+              const b64 = await getMediaBase64(contentUrl)
+              await Clipboard.setImageAsync(b64)
+            }
             Burnt.toast({
               haptic: 'success',
               title: 'Copied image to clipboard',
@@ -83,14 +98,25 @@ export default function MediaLightbox({
             })
           } finally {
             setShowActions(false)
+            setDownloading(false)
+            setDownloadProgress(0)
           }
         }
       },
       {
         title: 'Save',
         action: async () => {
+          const linkInfo = await getLinkInfo(contentUrl)
           try {
-            await saveMediaToPhotos(contentUrl)
+            if (linkInfo.type === LinkType.Video) {
+              setDownloading(true)
+              await saveRemoteMediaToPhotos(contentUrl, (progress) => {
+                setDownloadProgress(progress)
+              })
+            } else {
+              setDownloading(true)
+              await saveMediaToPhotos(contentUrl)
+            }
             Burnt.toast({
               haptic: 'success',
               title: 'Saved to photos',
@@ -104,6 +130,8 @@ export default function MediaLightbox({
             })
           } finally {
             setShowActions(false)
+            setDownloading(false)
+            setDownloadProgress(0)
           }
         }
       },
@@ -265,6 +293,32 @@ export default function MediaLightbox({
     controlsOpacity.value = withDelay(1000, withTiming(0, { duration: 200 }))
   }, [])
 
+  const downloadingOverlay = downloading ? (
+    <Modal animationType="none" transparent={true} visible={true}>
+      <View
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'black',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
+        <Loader />
+        {downloadProgress > 0 && (
+          <BodyText marginTop="$1" color="white">
+            {Math.round(downloadProgress * 100)}%
+          </BodyText>
+        )}
+      </View>
+    </Modal>
+  ) : null
+
   return (
     <>
       <Pressable
@@ -280,6 +334,7 @@ export default function MediaLightbox({
             visible={true}
             supportedOrientations={['portrait', 'landscape']}
           >
+            {downloadingOverlay}
             <GestureHandlerRootView style={{ flex: 1 }}>
               <GestureDetector gesture={gestures}>
                 <Animated.View style={animatedContainerStyle}>
