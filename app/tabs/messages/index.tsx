@@ -146,8 +146,6 @@ function RenderReplies() {
     [data]
   )
 
-  console.log(allReplies.length)
-
   return (
     <View flex>
       <CommentsList

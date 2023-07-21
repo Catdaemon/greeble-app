@@ -1,6 +1,6 @@
 import { formatDistanceStrict } from 'date-fns'
 import { ReactNode, useEffect, useState } from 'react'
-import { Pressable } from 'react-native'
+import { Modal, Pressable } from 'react-native'
 import Animated, {
   Easing,
   runOnJS,
@@ -20,6 +20,9 @@ import SwipeyActions, { SwipeyAction } from '../SwipeyActions'
 import TextWithIcon from '../TextWithIcon'
 import useActiveAccount from '../../hooks/useActiveAccount'
 import useActiveAccountData from '../../hooks/useActiveAccountData'
+import TextInput from '../TextInput'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { Sheet } from 'tamagui'
 
 // colors to use for comment depth
 const commentColorSequence = [
@@ -185,6 +188,7 @@ export default function Comment({
   const [initialHeight, setInitialHeight] = useState(0)
   const mutations = useLemmyCommentMutation(id, onActionPerformed)
   const [actionLoading, setActionLoading] = useState(false)
+  const [textSelectionOpen, setTextSelectionOpen] = useState(false)
 
   const heightAmount = useSharedValue(1)
   const opacityAmount = useSharedValue(1)
@@ -235,6 +239,12 @@ export default function Comment({
     {
       title: 'Report',
       action: async () => {}
+    },
+    {
+      title: 'Select text',
+      action: () => {
+        setTextSelectionOpen(true)
+      }
     }
   ]
 
@@ -369,6 +379,18 @@ export default function Comment({
 
   return (
     <View>
+      <Sheet
+        open={textSelectionOpen}
+        onOpenChange={setTextSelectionOpen}
+        modal
+        dismissOnSnapToBottom
+      >
+        <Sheet.Overlay />
+        <Sheet.Handle backgroundColor="$fadedText" />
+        <Sheet.Frame>
+          <TextInput multiline editable={false} value={body} />
+        </Sheet.Frame>
+      </Sheet>
       <Animated.View
         onLayout={(event) => {
           if (initialHeight !== 0) return
