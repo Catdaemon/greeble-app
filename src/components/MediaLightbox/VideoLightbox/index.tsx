@@ -92,7 +92,7 @@ export default function VideoLightbox({
       {linkInfo.thumbnailUrl || thumbnailUrl ? (
         <Image
           contentFit="cover"
-          source={srcProp}
+          src={srcProp.uri}
           blurRadius={blur ? 100 : 0}
           style={{
             aspectRatio: square ? 1 : 16 / 9,

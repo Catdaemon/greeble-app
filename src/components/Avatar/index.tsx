@@ -1,8 +1,7 @@
-import { StyleProp, ViewStyle } from 'react-native'
-import Icon, { IconName } from '../Icon'
-import Image from '../Core/Image'
 import { ImageStyle } from 'expo-image'
+import Image from '../Core/Image'
 import { View } from '../Core/View'
+import Icon, { IconName } from '../Icon'
 
 export interface AvatarProps {
   size?: number
@@ -22,9 +21,7 @@ export default function Avatar({
   return src ? (
     <Image
       enableLightbox={pressable}
-      source={{
-        uri: src
-      }}
+      src={src}
       style={{
         width: size,
         height: size,

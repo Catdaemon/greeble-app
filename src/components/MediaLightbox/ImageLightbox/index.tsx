@@ -1,26 +1,15 @@
-import { Image, ImageProps } from 'expo-image'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import MediaLightbox from '..'
 import { useAppSettingsStore } from '../../../stores/appSettingsStore'
 import { View } from '../../Core/View'
 import Icon from '../../Icon'
+import Image, { ImageProps } from '../../Core/Image'
 
 export default function ImageLightbox(props: ImageProps) {
   const [loadImage] = useAppSettingsStore((state) => [state.loadPostImages])
   const safeArea = useSafeAreaInsets()
 
-  const sourceAsString =
-    typeof props.source === 'string'
-      ? props.source
-      : Array.isArray(props.source)
-      ? typeof props.source[0] === 'string'
-        ? props.source[0]
-        : props.source[0].uri
-      : typeof props.source === 'object'
-      ? props.source.uri
-      : ''
-
-  const isGif = sourceAsString?.endsWith('.gif')
+  const isGif = props.src?.endsWith('.gif')
 
   const imageThumb = isGif ? (
     <Icon name="Video" size={72} color="$fadedText" />
@@ -39,12 +28,12 @@ export default function ImageLightbox(props: ImageProps) {
       paddingRight={safeArea.right}
     >
       <Image
-        source={props.source}
+        src={props.src}
         contentFit="contain"
         style={{
-          flex: 1
+          width: '100%',
+          height: '100%'
         }}
-        // cachePolicy="disk"
       />
     </View>
   )
@@ -53,7 +42,7 @@ export default function ImageLightbox(props: ImageProps) {
     <MediaLightbox
       content={image}
       thumbnail={imageThumb}
-      contentUrl={sourceAsString}
+      contentUrl={props.src}
     />
   )
 }

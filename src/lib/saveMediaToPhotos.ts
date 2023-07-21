@@ -1,47 +1,18 @@
-import * as FileSystem from 'expo-file-system'
 import { SaveFormat, manipulateAsync } from 'expo-image-manipulator'
 import * as MediaLibrary from 'expo-media-library'
 import getLinkInfo from './getLinkInfo'
 import { LinkType } from './lemmy/linkInfoTypes'
 
-export default async function saveMediaToPhotos(
-  contentUrl: string,
-  progressCallback: (progress: number) => void
-) {
+export default async function saveMediaToPhotos(contentUrl: string) {
   const linkInfo = await getLinkInfo(contentUrl)
+
   if (linkInfo.type === LinkType.Video) {
-    const callback = (downloadProgress) => {
-      const progress =
-        downloadProgress.totalBytesWritten /
-        downloadProgress.totalBytesExpectedToWrite
-      progressCallback(progress)
-    }
-
-    const downloadResumable = FileSystem.createDownloadResumable(
-      contentUrl,
-      FileSystem.cacheDirectory + 'greeble-temp.mp4',
-      {
-        headers: {
-          'User-Agent': 'greeble/1'
-        }
-      },
-      callback
-    )
-
-    await downloadResumable.downloadAsync()
-    await MediaLibrary.saveToLibraryAsync(downloadResumable.fileUri)
-    await FileSystem.deleteAsync(downloadResumable.fileUri)
+    await MediaLibrary.saveToLibraryAsync(contentUrl)
   } else {
-    const download = await FileSystem.downloadAsync(
-      contentUrl,
-      FileSystem.cacheDirectory + 'greeble-temp.jpg'
-    )
-    const manipResult = await manipulateAsync(download.uri, [], {
+    const manipResult = await manipulateAsync(contentUrl, [], {
       compress: 1,
       format: SaveFormat.PNG
     })
     await MediaLibrary.saveToLibraryAsync(manipResult.uri)
-    await FileSystem.deleteAsync(download.uri)
-    await FileSystem.deleteAsync(manipResult.uri)
   }
 }

@@ -1,14 +1,14 @@
 import { marked } from 'marked'
-import { Fragment, ReactNode, useMemo, useRef } from 'react'
+import { Fragment, ReactNode, useRef } from 'react'
+import { Text } from 'react-native'
 import { useTheme } from 'tamagui'
 import openLink from '../../lib/openLink'
 import { useAppSettingsStore } from '../../stores/appSettingsStore'
+import Image from '../Core/Image'
 import { BodyText, HeadingText, LinkText } from '../Core/Text'
 import { View } from '../Core/View'
 import Icon from '../Icon'
-import Image from '../Core/Image'
 import LinkRow from '../LinkRow'
-import { Text } from 'react-native'
 import communityRefMatcher from './communityRefMatcher'
 
 export interface MarkdownViewProps {
@@ -152,9 +152,7 @@ const renderFuncs: Record<
       return (
         <Image
           enableLightbox
-          source={{
-            uri: token.href
-          }}
+          src={token.href}
           contentFit="contain"
           style={{
             width: '100%',

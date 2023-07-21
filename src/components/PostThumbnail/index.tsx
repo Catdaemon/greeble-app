@@ -57,9 +57,7 @@ function Thumbnail({
         <Image
           enableLightbox
           blurRadius={blur ? 100 : 0}
-          source={{
-            uri: imageUrl ?? linkUrl
-          }}
+          src={imageUrl ?? linkUrl}
           contentFit={contain ? 'contain' : 'cover'}
           style={{
             aspectRatio: square ? 1 : 16 / 9,
@@ -83,9 +81,7 @@ function Thumbnail({
           <IconOverlay icon={linkInfo.icon} iconColor={linkInfo.color}>
             <Image
               contentFit={contain ? 'contain' : 'cover'}
-              source={{
-                uri: imageUrl
-              }}
+              src={imageUrl}
               style={{
                 aspectRatio: square ? 1 : 16 / 9,
                 width: thumbSize

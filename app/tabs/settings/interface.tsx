@@ -13,7 +13,9 @@ export default function InterfaceSettings() {
   return (
     <ScrollView padding="$0.5">
       <View gap="$0.5">
-        <Stack.Screen options={{ title: 'Interface' }} />
+        <Stack.Screen
+          options={{ title: 'Interface', fullScreenGestureEnabled: true }}
+        />
 
         <HeadingText marginTop="$1">Convenience</HeadingText>
 

@@ -1,10 +1,9 @@
-import { Dimensions } from 'react-native'
 import { useTheme } from 'tamagui'
 import Card from '../Card'
 import Button from '../Core/Button'
+import Image from '../Core/Image'
 import { BodyText, HeadingText } from '../Core/Text'
 import { View } from '../Core/View'
-import Image from '../Core/Image'
 
 export interface CommunityCardProps {
   communityData: Lemmy.Data.CommunityData
@@ -25,9 +24,7 @@ export default function CommunityCard({ communityData }: CommunityCardProps) {
           style={{ height: 150 }}
           contentFit="cover"
           contentPosition="top center"
-          source={{
-            uri: communityData.community.banner ?? communityData.community.icon
-          }}
+          src={communityData.community.banner ?? communityData.community.icon}
         />
       )}
       <View marginTop="$1">

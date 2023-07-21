@@ -13,7 +13,9 @@ export default function AppearanceSettings() {
   return (
     <ScrollView>
       <View gap="$0.5" padding="$0.5">
-        <Stack.Screen options={{ title: 'Appearance' }} />
+        <Stack.Screen
+          options={{ title: 'Appearance', fullScreenGestureEnabled: true }}
+        />
 
         <HeadingText marginTop="$1">Theme</HeadingText>
         <AppSetting

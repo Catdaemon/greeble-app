@@ -10,23 +10,37 @@ import queryClient from '../../../src/lib/lemmy/rqClient'
 import { useAccountStore } from '../../../src/stores/accountStore'
 import { useAppSettingsStore } from '../../../src/stores/appSettingsStore'
 import { useTemporaryStore } from '../../../src/stores/temporaryStore'
+import {
+  clearFileDownloadCache,
+  getFileDownloadCacheSizeMB
+} from '../../../src/hooks/useFileDownload'
+import { useEffect, useState } from 'react'
 
 export default function ContentSettings() {
+  const [downloadsMB, setDownloadsMB] = useState(0)
+
+  useEffect(() => {
+    getFileDownloadCacheSizeMB().then(setDownloadsMB)
+  }, [])
+
   return (
     <View gap="$0.5" padding="$0.5">
-      <Stack.Screen options={{ title: 'Data' }} />
+      <Stack.Screen
+        options={{ title: 'Data', fullScreenGestureEnabled: true }}
+      />
 
       <HeadingText marginTop="$1">Clear data</HeadingText>
       <TouchableOpacity
         onPress={async () => {
           await ExpoImage.Image.clearDiskCache()
           await ExpoImage.Image.clearMemoryCache()
+          await clearFileDownloadCache()
           Alert.alert('Deleted', 'Cached image data has been deleted.')
         }}
       >
         <CardRow
           left={<Icon name="Trash2" />}
-          center={<BodyText>Delete image cache</BodyText>}
+          center={<BodyText>Delete image cache ({downloadsMB}MB)</BodyText>}
           right={<Icon name="ChevronRight" />}
         />
       </TouchableOpacity>
@@ -52,7 +66,10 @@ export default function ContentSettings() {
               {
                 text: 'Delete',
                 style: 'destructive',
-                onPress: () => {
+                onPress: async () => {
+                  await clearFileDownloadCache()
+                  await ExpoImage.Image.clearDiskCache()
+                  await ExpoImage.Image.clearMemoryCache()
                   useTemporaryStore.getState().clear()
                   useAppSettingsStore.getState().clear()
                   useAccountStore.getState().clear()

@@ -1,25 +1,19 @@
-import { Dimensions, useWindowDimensions } from 'react-native'
-import Animated, {
-  SharedValue,
-  interpolate,
-  useAnimatedStyle,
-  useDerivedValue
-} from 'react-native-reanimated'
-import { useLemmyMutation, useLemmyQuery } from '../../lib/lemmy/rqHooks'
-import Image from '../Core/Image'
-import { useTheme } from 'tamagui'
-import { View } from '../Core/View'
-import { BodyText, HeadingText } from '../Core/Text'
-import Button from '../Core/Button'
-import Avatar from '../Avatar'
-import queryKeys from '../../lib/lemmy/rqKeys'
-import Loader from '../Core/Loader'
-import FullScreenLoader from '../Core/Loader/FullScreenLoader'
-import { Stack, router } from 'expo-router'
 import { HeaderBackground } from '@react-navigation/elements'
-import Icon from '../Icon'
-import MoreButton from '../Core/MoreButton'
+import { Stack, router } from 'expo-router'
+import { useWindowDimensions } from 'react-native'
+import { SharedValue } from 'react-native-reanimated'
+import { useTheme } from 'tamagui'
 import useActionSheet from '../../hooks/useActionSheet'
+import { useLemmyMutation, useLemmyQuery } from '../../lib/lemmy/rqHooks'
+import queryKeys from '../../lib/lemmy/rqKeys'
+import Avatar from '../Avatar'
+import Button from '../Core/Button'
+import Image from '../Core/Image'
+import FullScreenLoader from '../Core/Loader/FullScreenLoader'
+import MoreButton from '../Core/MoreButton'
+import { BodyText, HeadingText } from '../Core/Text'
+import { View } from '../Core/View'
+import Icon from '../Icon'
 
 export interface CommunityHeaderProps {
   communityId?: string
@@ -100,9 +94,7 @@ export default function CommunityHeader({
                   contentFit="cover"
                   contentPosition="center"
                   blurRadius={5}
-                  source={{
-                    uri: data.community_view.community.banner
-                  }}
+                  src={data.community_view.community.banner}
                 />
               </View>
             ) : (

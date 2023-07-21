@@ -47,8 +47,6 @@ export default function MediaLightbox({
   const [open, setOpen] = useState(false)
   const [render, setRender] = useState(false)
   const [showActions, setShowActions] = useState(false)
-  const [downloadProgress, setDownloadProgress] = useState(0)
-  const [downloading, setDownloading] = useState(false)
 
   const opacity = useSharedValue(0)
   const dragStartX = useSharedValue(0)
@@ -70,10 +68,7 @@ export default function MediaLightbox({
         title: 'Copy',
         action: async () => {
           try {
-            setDownloading(true)
-            const b64 = await getMediaBase64(contentUrl, (progress) => {
-              setDownloadProgress(progress)
-            })
+            const b64 = await getMediaBase64(contentUrl)
             await Clipboard.setImageAsync(b64)
             Burnt.toast({
               haptic: 'success',
@@ -88,8 +83,6 @@ export default function MediaLightbox({
             })
           } finally {
             setShowActions(false)
-            setDownloading(false)
-            setDownloadProgress(0)
           }
         }
       },
@@ -97,10 +90,7 @@ export default function MediaLightbox({
         title: 'Save',
         action: async () => {
           try {
-            setDownloading(true)
-            await saveMediaToPhotos(contentUrl, (progress) => {
-              setDownloadProgress(progress)
-            })
+            await saveMediaToPhotos(contentUrl)
             Burnt.toast({
               haptic: 'success',
               title: 'Saved to photos',
@@ -114,8 +104,6 @@ export default function MediaLightbox({
             })
           } finally {
             setShowActions(false)
-            setDownloading(false)
-            setDownloadProgress(0)
           }
         }
       },
@@ -277,32 +265,6 @@ export default function MediaLightbox({
     controlsOpacity.value = withDelay(1000, withTiming(0, { duration: 200 }))
   }, [])
 
-  const downloadingOverlay = downloading ? (
-    <Modal animationType="none" transparent={true} visible={true}>
-      <View
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
-          width: '100%',
-          height: '100%',
-          backgroundColor: 'black',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-      >
-        <Loader />
-        {downloadProgress > 0 && (
-          <BodyText marginTop="$1" color="white">
-            {Math.round(downloadProgress * 100)}%
-          </BodyText>
-        )}
-      </View>
-    </Modal>
-  ) : null
-
   return (
     <>
       <Pressable
@@ -318,7 +280,6 @@ export default function MediaLightbox({
             visible={true}
             supportedOrientations={['portrait', 'landscape']}
           >
-            {downloadingOverlay}
             <GestureHandlerRootView style={{ flex: 1 }}>
               <GestureDetector gesture={gestures}>
                 <Animated.View style={animatedContainerStyle}>

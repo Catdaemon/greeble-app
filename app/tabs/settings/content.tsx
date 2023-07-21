@@ -8,7 +8,9 @@ export default function ContentSettings() {
   const [allowNsfw] = useAppSettingsStore((state) => [state.allowNsfw])
   return (
     <View gap="$0.5" padding="$0.5">
-      <Stack.Screen options={{ title: 'Content' }} />
+      <Stack.Screen
+        options={{ title: 'Content', fullScreenGestureEnabled: true }}
+      />
 
       <HeadingText marginTop="$1">Adult content</HeadingText>
       <BodyText>
