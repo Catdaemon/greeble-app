@@ -270,3 +270,13 @@ namespace Lemmy.Requests.GetMentions {
     }[]
   }
 }
+namespace Lemmy.Requests.GetReplies {
+  export interface Request extends Auth {
+    limit?: number
+    page?: number
+    sort?: Lemmy.Enums.SortType
+  }
+  export interface Response {
+    replies: Lemmy.Data.CommentReplyData[]
+  }
+}

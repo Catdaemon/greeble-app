@@ -8,7 +8,9 @@ const queryKeys = {
   COMMUNITY: 'community',
   COMMUNITIES: 'communities',
   MESSAGES: 'messages',
-  SITE: 'site'
+  SITE: 'site',
+  MENTIONS: 'mentions',
+  USERREPLIES: 'userReplies'
 }
 
 export default queryKeys

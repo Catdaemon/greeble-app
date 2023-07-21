@@ -213,6 +213,12 @@ const fetchers = {
       method: 'GET',
       endpoint: '/user/mention',
       payload
+    }),
+  getReplies: (payload: Lemmy.Requests.GetReplies.Request) =>
+    lemmyFetcherFunc<Lemmy.Requests.GetReplies.Response>({
+      method: 'GET',
+      endpoint: '/user/replies',
+      payload
     })
 }
 

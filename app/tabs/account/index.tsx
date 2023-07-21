@@ -2,7 +2,6 @@ import { Stack, useRouter } from 'expo-router'
 import { useMemo, useState } from 'react'
 import { Pressable } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { ScrollView } from 'tamagui'
 import AccountSwitcher from '../../../src/components/AccountSwitcher'
 import Avatar from '../../../src/components/Avatar'
 import Card from '../../../src/components/Card'
@@ -10,6 +9,8 @@ import CardRow from '../../../src/components/CardRow'
 import { BodyText, HeadingText } from '../../../src/components/Core/Text'
 import CenteredView, { View } from '../../../src/components/Core/View'
 import Icon from '../../../src/components/Icon'
+import CommentsList from '../../../src/components/InfiniteList/CommentsList'
+import PostsList from '../../../src/components/InfiniteList/PostsList'
 import SegmentedButtonRow from '../../../src/components/SegmentedButtonRow'
 import TextWithIcon from '../../../src/components/TextWithIcon'
 import useActiveAccount from '../../../src/hooks/useActiveAccount'
@@ -19,8 +20,7 @@ import {
 } from '../../../src/lib/lemmy/rqHooks'
 import queryKeys from '../../../src/lib/lemmy/rqKeys'
 import pluraliseNumber from '../../../src/lib/pluraliseNumber'
-import PostsList from '../../../src/components/InfiniteList/PostsList'
-import CommentsList from '../../../src/components/InfiniteList/CommentsList'
+import FullScreenLoader from '../../../src/components/Core/Loader/FullScreenLoader'
 
 type ValidTabId = 'posts' | 'comments' | 'savedPosts' | 'savedComments'
 
@@ -38,6 +38,10 @@ function SavedPosts() {
     () => data?.pages?.flatMap((x) => x.posts).filter((x) => !!x),
     [data?.pages?.length]
   )
+
+  if (isLoading) {
+    return <FullScreenLoader />
+  }
 
   return (
     <View flex>
@@ -77,6 +81,10 @@ function SavedComments() {
     [data?.pages?.length]
   )
 
+  if (isLoading) {
+    return <FullScreenLoader />
+  }
+
   return (
     <View flex>
       {allComments?.length > 0 ? (
@@ -114,6 +122,10 @@ function MyComments() {
     }
   )
   const allComments = data?.comments
+
+  if (isLoading) {
+    return <FullScreenLoader />
+  }
 
   return (
     <View flex>
@@ -153,6 +165,10 @@ function MyPosts() {
     }
   )
   const allPosts = data?.posts
+
+  if (isLoading) {
+    return <FullScreenLoader />
+  }
 
   return (
     <View flex>

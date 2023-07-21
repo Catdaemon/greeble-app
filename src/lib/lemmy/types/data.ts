@@ -68,4 +68,24 @@ namespace Lemmy.Data {
     creator: Lemmy.Objects.Person
     recipient: Lemmy.Objects.Person
   }
+  export interface CommentReplyData {
+    comment: Lemmy.Objects.Comment
+    comment_reply: {
+      id: string
+      recipient_id: string
+      comment_id: string
+      read: boolean
+      published: string
+    }
+    community: Lemmy.Objects.Community
+    counts: Lemmy.Counts.PostCounts
+    creator_banned_from_community: boolean
+    creator_blocked: boolean
+    creator: Lemmy.Objects.Person
+    my_vote?: number
+    post: Lemmy.Objects.Post
+    recipient: Lemmy.Objects.Person
+    saved: boolean
+    subscribed: Lemmy.Enums.SubscribedType
+  }
 }
