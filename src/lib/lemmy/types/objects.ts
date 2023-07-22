@@ -110,8 +110,12 @@ namespace Lemmy.Objects {
     }
     // follows: Array<CommunityFollowerView>
     // moderates: Array<CommunityModeratorView>
-    // community_blocks: Array<CommunityBlockView>
-    // person_blocks: Array<PersonBlockView>
+    community_blocks: {
+      community: Community
+    }[]
+    person_blocks: {
+      person: Person
+    }[]
     discussion_languages: string[]
   }
   export interface PrivateMessage {

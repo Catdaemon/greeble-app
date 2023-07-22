@@ -290,13 +290,13 @@ export default function AccountScreen() {
             )}
           </Card>
           {!isAnonymous && (
-            <View>
+            <Pressable onPress={() => router.push('/tabs/account/blockList')}>
               <CardRow
                 left={<Icon name="Ban" />}
                 center={<BodyText>Manage block lists</BodyText>}
                 right={<Icon name="ChevronRight" />}
               />
-            </View>
+            </Pressable>
           )}
         </View>
       )}

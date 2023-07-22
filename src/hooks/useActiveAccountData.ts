@@ -12,5 +12,10 @@ export default function useActiveAccountData() {
 
   var accountData = data?.my_user?.local_user_view
 
-  return { accountData, isLoading }
+  return {
+    accountData,
+    isLoading,
+    blockedPeople: data?.my_user?.person_blocks,
+    blockedCommunities: data?.my_user?.community_blocks
+  }
 }
