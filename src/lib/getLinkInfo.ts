@@ -12,6 +12,7 @@ import {
   LinkTypeIcon
 } from './lemmy/linkInfoTypes'
 import getLocalLinkType from './lemmy/util/getLocalLinkType'
+import isLemmyLink from './lemmy/util/isLemmyLink'
 
 function getLinkSourceFromUrl(url?: string) {
   const keys = (Object.keys(LinkSourceRegex) as unknown as LinkSource[]).filter(
@@ -80,14 +81,6 @@ async function getRedGifsVideoInfo(url?: string) {
   }
 }
 
-function urlIsLocalServer(url: string) {
-  const activeAccount = useAccountStore.getState().getActiveAccount()
-  if (activeAccount) {
-    return url?.startsWith(activeAccount.serverURL) ?? false
-  }
-  return false
-}
-
 function getUrlDomain(url: string) {
   try {
     const result = new URL(url)
@@ -142,8 +135,8 @@ export default async function getLinkInfo(url?: string): Promise<LinkInfo> {
       color: LinkSourceColors[LinkSource.Unknown]
     }
   }
-  const isLocalServer = urlIsLocalServer(url)
-  const localType = isLocalServer ? getLocalLinkType(url) : null
+  const isLocalServer = await isLemmyLink(url)
+  const localType = isLocalServer ? await getLocalLinkType(url) : null
   const source = getLinkSourceFromUrl(url)
   const type = localType
     ? localType
