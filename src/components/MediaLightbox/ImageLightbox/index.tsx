@@ -3,7 +3,8 @@ import MediaLightbox from '..'
 import { useAppSettingsStore } from '../../../stores/appSettingsStore'
 import { View } from '../../Core/View'
 import Icon from '../../Icon'
-import Image, { ImageProps } from '../../Core/Image'
+import { ImageProps } from '../../Core/Image'
+import CachedImage from '../../Core/Image/CachedImage'
 
 export default function ImageLightbox(props: ImageProps) {
   const [loadImage] = useAppSettingsStore((state) => [state.loadPostImages])
@@ -14,7 +15,12 @@ export default function ImageLightbox(props: ImageProps) {
   const imageThumb = isGif ? (
     <Icon name="Video" size={72} color="$fadedText" />
   ) : loadImage ? (
-    <Image {...props} />
+    <CachedImage
+      {...props}
+      source={{
+        uri: props.src
+      }}
+    />
   ) : (
     <Icon name="Image" size={72} color="$fadedText" />
   )
@@ -27,8 +33,10 @@ export default function ImageLightbox(props: ImageProps) {
       paddingLeft={safeArea.left}
       paddingRight={safeArea.right}
     >
-      <Image
-        src={props.src}
+      <CachedImage
+        source={{
+          uri: props.src
+        }}
         contentFit="contain"
         style={{
           width: '100%',

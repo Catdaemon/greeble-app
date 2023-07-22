@@ -388,7 +388,9 @@ export default function Comment({
         <Sheet.Overlay />
         <Sheet.Handle backgroundColor="$fadedText" />
         <Sheet.Frame>
-          <TextInput multiline editable={false} value={body} />
+          {textSelectionOpen && (
+            <TextInput multiline editable={false} value={body} />
+          )}
         </Sheet.Frame>
       </Sheet>
       <Animated.View

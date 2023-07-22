@@ -89,6 +89,7 @@ function SavedComments() {
     <View flex>
       {allComments?.length > 0 ? (
         <CommentsList
+          flattenTree
           onCommentActionPerformed={() => {}}
           data={allComments}
           refetch={refetch}
