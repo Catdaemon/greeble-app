@@ -346,7 +346,6 @@ export default function Comment({
     <View
       borderLeftWidth={2}
       borderLeftColor={getCommentColor(depth)}
-      gap="$0.5"
       padding="$0.5"
       backgroundColor="$contentBackground"
     >
